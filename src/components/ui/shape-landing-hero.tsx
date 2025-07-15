@@ -1,85 +1,281 @@
-import React from 'react';
-import { ArrowRight, Zap } from 'lucide-react';
-import Button from '../common/Button';
+"use client";
 
-interface HeroGeometricProps {
-  badge: string;
-  title1: string;
-  title2: string;
-  onStartClick: () => void;
+import { motion } from "framer-motion";
+import { Circle } from "lucide-react";
+import { cn } from "../../lib/utils";
+
+function ElegantShape({
+    className,
+    delay = 0,
+    width = 400,
+    height = 100,
+    rotate = 0,
+    gradient = "from-white/[0.08]",
+}: {
+    className?: string;
+    delay?: number;
+    width?: number;
+    height?: number;
+    rotate?: number;
+    gradient?: string;
+}) {
+    return (
+        <motion.div
+            initial={{
+                opacity: 0,
+                y: -150,
+                rotate: rotate - 15,
+            }}
+            animate={{
+                opacity: 1,
+                y: 0,
+                rotate: rotate,
+            }}
+            transition={{
+                duration: 2.4,
+                delay,
+                ease: [0.23, 0.86, 0.39, 0.96],
+                opacity: { duration: 1.2 },
+            }}
+            className={cn("absolute", className)}
+        >
+            <motion.div
+                animate={{
+                    y: [0, 15, 0],
+                }}
+                transition={{
+                    duration: 12,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                }}
+                style={{
+                    width,
+                    height,
+                }}
+                className="relative"
+            >
+                <div
+                    className={cn(
+                        "absolute inset-0 rounded-full",
+                        "bg-gradient-to-r to-transparent",
+                        gradient,
+                        "backdrop-blur-[2px] border-2 border-white/[0.15]",
+                        "shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]",
+                        "after:absolute after:inset-0 after:rounded-full",
+                        "after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]"
+                    )}
+                />
+            </motion.div>
+        </motion.div>
+    );
 }
 
-export const HeroGeometric: React.FC<HeroGeometricProps> = ({
-  badge,
-  title1,
-  title2,
-  onStartClick,
-}) => {
-  return (
-    <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 overflow-hidden">
-      {/* Formes géométriques animées */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/20 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-purple-500/20 rounded-full blur-lg animate-bounce"></div>
-        <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-cyan-500/10 rounded-full blur-2xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-pink-500/20 rounded-full blur-xl animate-bounce"></div>
-      </div>
+interface HeroGeometricProps {
+    badge?: string;
+    title1?: string;
+    title2?: string;
+    onStartClick?: () => void;
+}
 
-      {/* Grille de fond */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+export function HeroGeometric({
+    badge = "Créé par MagicUX",
+    title1 = "Élevez Votre",
+    title2 = "Vision Numérique",
+    onStartClick,
+}: HeroGeometricProps) {
+    const fadeUpVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: (i: number) => ({
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 1,
+                delay: 0.5 + i * 0.2,
+                ease: [0.25, 0.4, 0.25, 1],
+            },
+        }),
+    };
 
-      {/* Contenu principal */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
-        <div className="text-center max-w-4xl mx-auto">
-          {/* Badge */}
-          <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white/90 text-sm font-medium mb-8">
-            <Zap className="w-4 h-4 mr-2 text-yellow-400" />
-            {badge}
-          </div>
+    return (
+        <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
 
-          {/* Titre principal */}
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-            <span className="block">{title1}</span>
-            <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              {title2}
-            </span>
-          </h1>
+            {/* Animated shapes */}
+            <div className="absolute inset-0 overflow-hidden">
+                <ElegantShape
+                    delay={0.3}
+                    width={600}
+                    height={140}
+                    rotate={12}
+                    gradient="from-indigo-500/[0.15]"
+                    className="left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]"
+                />
 
-          {/* Sous-titre */}
-          <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Système de point de vente moderne et intuitif pour gérer votre commerce avec efficacité
-          </p>
+                <ElegantShape
+                    delay={0.5}
+                    width={500}
+                    height={120}
+                    rotate={-15}
+                    gradient="from-rose-500/[0.15]"
+                    className="right-[-5%] md:right-[0%] top-[70%] md:top-[75%]"
+                />
 
-          {/* Bouton d'action */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button
-              onClick={onStartClick}
-              size="lg"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-2xl transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
-            >
-              <span>Commencer Maintenant</span>
-              <ArrowRight className="w-5 h-5" />
-            </Button>
-          </div>
+                <ElegantShape
+                    delay={0.4}
+                    width={300}
+                    height={80}
+                    rotate={-8}
+                    gradient="from-violet-500/[0.15]"
+                    className="left-[5%] md:left-[10%] bottom-[5%] md:bottom-[10%]"
+                />
 
-          {/* Statistiques */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">99.9%</div>
-              <div className="text-white/70">Disponibilité</div>
+                <ElegantShape
+                    delay={0.6}
+                    width={200}
+                    height={60}
+                    rotate={20}
+                    gradient="from-amber-500/[0.15]"
+                    className="right-[15%] md:right-[20%] top-[10%] md:top-[15%]"
+                />
+
+                <ElegantShape
+                    delay={0.7}
+                    width={150}
+                    height={40}
+                    rotate={-25}
+                    gradient="from-cyan-500/[0.15]"
+                    className="left-[20%] md:left-[25%] top-[5%] md:top-[10%]"
+                />
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">24/7</div>
-              <div className="text-white/70">Support</div>
+
+            {/* Main content */}
+            <div className="relative z-10 container mx-auto px-4 md:px-6">
+                <div className="max-w-4xl mx-auto text-center pt-4">
+                    {/* Badge */}
+                    <motion.div
+                        custom={0}
+                        variants={fadeUpVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.08] border border-white/[0.15] mb-8 md:mb-12 backdrop-blur-sm"
+                    >
+                        <Circle className="h-3 w-3 fill-blue-400 text-blue-400" />
+                        <span className="text-sm text-white/80 tracking-wide font-medium">
+                            {badge}
+                        </span>
+                    </motion.div>
+
+                    {/* Main title */}
+                    <motion.div
+                        custom={1}
+                        variants={fadeUpVariants}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 md:mb-8 tracking-tight leading-tight">
+                            <span className="block bg-clip-text text-transparent bg-gradient-to-b from-white to-white/90">
+                                {title1}
+                            </span>
+                            <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400">
+                                {title2}
+                            </span>
+                        </h1>
+                    </motion.div>
+
+                    {/* Subtitle */}
+                    <motion.div
+                        custom={2}
+                        variants={fadeUpVariants}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        <p className="text-lg sm:text-xl md:text-2xl text-white/70 mb-12 leading-relaxed font-light tracking-wide max-w-3xl mx-auto px-4">
+                            Système de point de vente moderne et intuitif pour gérer votre commerce avec efficacité et style
+                        </p>
+                    </motion.div>
+
+                    {/* CTA Button */}
+                    <motion.div
+                        custom={3}
+                        variants={fadeUpVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="flex justify-center mb-16"
+                    >
+                        <motion.button
+                            onClick={onStartClick}
+                            className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 text-white font-semibold text-lg rounded-xl shadow-2xl overflow-hidden"
+                            whileHover={{ 
+                                scale: 1.05,
+                                boxShadow: "0 25px 50px -12px rgba(59, 130, 246, 0.5)"
+                            }}
+                            whileTap={{ scale: 0.98 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                        >
+                            <span className="relative z-10 flex items-center space-x-2">
+                                <span>Commencer Maintenant</span>
+                                <motion.span
+                                    className="inline-block"
+                                    animate={{ x: [0, 4, 0] }}
+                                    transition={{ duration: 1.5, repeat: Infinity }}
+                                >
+                                    →
+                                </motion.span>
+                            </span>
+                            <motion.div
+                                className="absolute inset-0 bg-gradient-to-r from-blue-700 via-purple-700 to-cyan-700"
+                                initial={{ opacity: 0 }}
+                                whileHover={{ opacity: 1 }}
+                                transition={{ duration: 0.3 }}
+                            />
+                        </motion.button>
+                    </motion.div>
+
+                    {/* Stats */}
+                    <motion.div
+                        custom={4}
+                        variants={fadeUpVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto"
+                    >
+                        <div className="text-center">
+                            <motion.div 
+                                className="text-3xl md:text-4xl font-bold text-white mb-2"
+                                animate={{ scale: [1, 1.05, 1] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                            >
+                                99.9%
+                            </motion.div>
+                            <div className="text-white/60 text-sm">Disponibilité</div>
+                        </div>
+                        <div className="text-center">
+                            <motion.div 
+                                className="text-3xl md:text-4xl font-bold text-white mb-2"
+                                animate={{ scale: [1, 1.05, 1] }}
+                                transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                            >
+                                24/7
+                            </motion.div>
+                            <div className="text-white/60 text-sm">Support</div>
+                        </div>
+                        <div className="text-center">
+                            <motion.div 
+                                className="text-3xl md:text-4xl font-bold text-white mb-2"
+                                animate={{ scale: [1, 1.05, 1] }}
+                                transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                            >
+                                1000+
+                            </motion.div>
+                            <div className="text-white/60 text-sm">Clients Satisfaits</div>
+                        </div>
+                    </motion.div>
+                </div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">1000+</div>
-              <div className="text-white/70">Clients Satisfaits</div>
-            </div>
-          </div>
+
+            {/* Bottom gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent pointer-events-none" />
         </div>
-      </div>
-    </div>
-  )
-  );
-};
+    );
+}
