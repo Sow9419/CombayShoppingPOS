@@ -80,5 +80,6 @@ export const HeroGeometric: React.FC<HeroGeometricProps> = ({
         </div>
       </div>
     </div>
+  )
   );
 };
