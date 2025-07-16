@@ -10,8 +10,17 @@ export interface Product {
   price: number;
   stock: number;
   category: string;
+  categoryId: string;
   barcode?: string;
   image?: string;
+  variant?: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  color?: string;
+  icon?: string;
 }
 
 export interface CartItem {
