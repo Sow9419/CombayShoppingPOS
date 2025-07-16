@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { ShoppingCart, X, Plus, Minus, Trash2, CreditCard, Banknote, Clock } from 'lucide-react';
+import React from 'react';
+import { ShoppingCart, X, Plus, Minus, Trash2} from 'lucide-react';
 import { CartItem } from '../../types';
-import Card from '../common/Card';
-import Button from '../common/Button';
+
 
 interface Props {
   /** Liste des articles dans le panier */

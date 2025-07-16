@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Plus, ShoppingCart, Trash2, User, BarChart3 } from 'lucide-react';
+import { Search, Plus, ShoppingCart, Trash2, BarChart3 } from 'lucide-react';
 import { Product, CartItem, Category } from '../types';
 import { mockProducts, mockCategories } from '../data/mockData';
 import CategoryBar from '../components/caisse/CategoryBar';
@@ -86,23 +86,7 @@ const CaissePage: React.FC = () => {
   const total = subtotal - discount + taxes;
 
   return (
-    <div className="h-screen bg-black text-white flex flex-col overflow-hidden">
-      {/* Header Mobile */}
-      <div className="md:hidden flex items-center justify-between p-4 border-b border-gray-800 flex-shrink-0">
-        <div className="text-lg font-semibold">9:41</div>
-        <div className="flex items-center space-x-1">
-          <div className="flex space-x-1">
-            <div className="w-1 h-3 bg-white rounded-full"></div>
-            <div className="w-1 h-3 bg-white rounded-full"></div>
-            <div className="w-1 h-3 bg-white rounded-full"></div>
-            <div className="w-1 h-3 bg-white/50 rounded-full"></div>
-          </div>
-          <div className="ml-2">
-            <div className="w-6 h-3 bg-white rounded-sm"></div>
-          </div>
-        </div>
-      </div>
-
+    <div className="h-screen bg-black text-white flex flex-col ">
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel - Products */}
@@ -135,7 +119,7 @@ const CaissePage: React.FC = () => {
           </div>
 
           {/* Scrollable Products Grid */}
-          <div className="flex-1 overflow-y-auto px-4 pb-4">
+          <div className="flex-1 overflow-y-auto px-4 pb-4 hide-scrollbar">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredProducts.map(product => (
                 <ProductCard
@@ -158,7 +142,7 @@ const CaissePage: React.FC = () => {
 
           {/* Mobile Bottom Actions - Fixed */}
           <div className="md:hidden flex-shrink-0 p-4 border-t border-gray-800 bg-black">
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-2 gap-4 mb-4 ">
               <button className="bg-gray-900 rounded-xl p-4 flex flex-col items-center">
                 <BarChart3 size={24} className="text-blue-500 mb-2" />
                 <span className="text-sm">Nouvelle vente</span>
@@ -218,7 +202,7 @@ const CaissePage: React.FC = () => {
     return (
       <div className="h-full flex flex-col overflow-hidden">
         {/* Fixed Header */}
-        <div className="flex-shrink-0 p-4 border-b border-gray-800 bg-gray-900">
+        <div className="flex-shrink-0 p-4 border-b border-gray-800 md:bg-gray-900 bg-black">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold">Nouvelle commande</h2>
@@ -233,7 +217,7 @@ const CaissePage: React.FC = () => {
         </div>
 
         {/* Fixed Customer Section */}
-        <div className="flex-shrink-0 p-4 border-b border-gray-800 bg-gray-900">
+        <div className="flex-shrink-0 p-4 border-b border-gray-800 md:bg-gray-900 bg-black">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
               <span className="text-white font-semibold text-sm">CN</span>
@@ -246,7 +230,7 @@ const CaissePage: React.FC = () => {
         </div>
 
         {/* Scrollable Cart Items */}
-        <div className="flex-1 overflow-y-auto bg-gray-900">
+        <div className="flex-1 overflow-y-auto md:bg-gray-900 bg-black">
           {cart.length === 0 ? (
             <div className="p-4 text-center text-gray-400 h-full flex flex-col items-center justify-center">
               <ShoppingCart size={48} className="mx-auto mb-4 opacity-50" />
@@ -303,7 +287,7 @@ const CaissePage: React.FC = () => {
 
         {/* Fixed Summary and Payment Section */}
         {cart.length > 0 && (
-          <div className="flex-shrink-0 p-4 border-t border-gray-800 bg-gray-900 space-y-4">
+          <div className="flex-shrink-0 p-4 border-t border-gray-800 md:bg-gray-900 bg-black space-y-4">
             {/* Summary */}
             <div className="space-y-2">
               <div className="flex justify-between text-gray-300">
