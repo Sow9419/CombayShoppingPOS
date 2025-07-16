@@ -1,61 +1,94 @@
 import React from 'react';
-import { Product } from '../../types';
-import Card from '../common/Card';
+import { Search, Plus } from 'lucide-react';
+import { Product, Category } from '../../types';
+import ProductCard from './ProductCard';
+import CategoryBar from './CategoryBar';
 
 interface Props {
   /** Liste des produits à afficher */
   products: Product[];
+  /** Liste des catégories */
+  categories: Category[];
+  /** Catégorie sélectionnée */
+  selectedCategory: string | null;
   /** Fonction appelée lorsqu'un produit est cliqué */
   onProductClick: (product: Product) => void;
   /** Terme de recherche actuel */
   searchTerm: string;
   /** Fonction appelée lorsque le terme de recherche change */
   onSearchTermChange: (term: string) => void;
+  /** Fonction appelée pour sélectionner une catégorie */
+  onCategorySelect: (categoryId: string | null) => void;
+  /** Fonction pour ajouter un produit */
+  onAddProduct: () => void;
+  /** Fonction pour ajouter une catégorie */
+  onAddCategory: () => void;
 }
 
 /**
- * Affiche une grille de produits avec une barre de recherche.
- * La grille de produits est défilable.
+ * Grille de produits optimisée avec header fixe et contenu scrollable
  */
 const ProductsGrid: React.FC<Props> = ({
   products,
+  categories,
+  selectedCategory,
   onProductClick,
   searchTerm,
   onSearchTermChange,
+  onCategorySelect,
+  onAddProduct,
+  onAddCategory,
 }) => {
   return (
-    <div className="lg:col-span-2 flex flex-col h-full">
-      {/* Barre de recherche */}
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Rechercher un produit ou scanner un code..."
-          value={searchTerm}
-          onChange={(e) => onSearchTermChange(e.target.value)}
-          className="w-full md:w-80 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+    <div className="flex flex-col h-full overflow-hidden">
+      {/* Fixed Header Section */}
+      <div className="flex-shrink-0 bg-black">
+        {/* Search Bar */}
+        <div className="p-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={(e) => onSearchTermChange(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+
+        {/* Category Bar */}
+        <div className="px-4 pb-4">
+          <CategoryBar
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onCategorySelect={onCategorySelect}
+            onAddCategory={onAddCategory}
+          />
+        </div>
       </div>
 
-      {/* Grille de produits */}
-      <Card className="flex-grow overflow-y-auto">
-        <h2 className="text-xl font-semibold text-white mb-4">Produits</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {/* Scrollable Products Grid */}
+      <div className="flex-1 overflow-y-auto px-4 pb-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map(product => (
-            <div
+            <ProductCard
               key={product.id}
-              onClick={() => onProductClick(product)}
-              className="p-4 bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors"
-            >
-              <h3 className="font-medium text-white">{product.name}</h3>
-              <p className="text-sm text-gray-400 mt-1">{product.category}</p>
-              <div className="flex justify-between items-center mt-3">
-                <span className="text-lg font-bold text-green-400">{product.price.toFixed(2)}€</span>
-                <span className="text-sm text-gray-400">Stock: {product.stock}</span>
-              </div>
-            </div>
+              product={product}
+              onClick={onProductClick}
+            />
           ))}
+          
+          {/* Add Product Card */}
+          <div
+            onClick={onAddProduct}
+            className="bg-gray-900 rounded-2xl p-4 h-32 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-800 transition-colors border-2 border-dashed border-gray-700"
+          >
+            <Plus size={24} className="text-gray-400 mb-2" />
+            <span className="text-gray-400 text-sm text-center">Ajouter un produit</span>
+          </div>
         </div>
-      </Card>
+      </div>
     </div>
   );
 };

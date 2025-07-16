@@ -86,9 +86,9 @@ const CaissePage: React.FC = () => {
   const total = subtotal - discount + taxes;
 
   return (
-    <div className="h-screen bg-black text-white flex flex-col">
+    <div className="h-screen bg-black text-white flex flex-col overflow-hidden">
       {/* Header Mobile */}
-      <div className="md:hidden flex items-center justify-between p-4 border-b border-gray-800">
+      <div className="md:hidden flex items-center justify-between p-4 border-b border-gray-800 flex-shrink-0">
         <div className="text-lg font-semibold">9:41</div>
         <div className="flex items-center space-x-1">
           <div className="flex space-x-1">
@@ -104,35 +104,38 @@ const CaissePage: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex">
+      <div className="flex-1 flex overflow-hidden">
         {/* Left Panel - Products */}
-        <div className="flex-1 flex flex-col">
-          {/* Search Bar */}
-          <div className="p-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <input
-                type="text"
-                placeholder="Search"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Fixed Header Section */}
+          <div className="flex-shrink-0 bg-black">
+            {/* Search Bar */}
+            <div className="p-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            {/* Category Bar */}
+            <div className="px-4 pb-4">
+              <CategoryBar
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onCategorySelect={setSelectedCategory}
+                onAddCategory={() => setShowAddCategory(true)}
               />
             </div>
           </div>
 
-          {/* Category Bar */}
-          <div className="px-4 mb-4">
-            <CategoryBar
-              categories={categories}
-              selectedCategory={selectedCategory}
-              onCategorySelect={setSelectedCategory}
-              onAddCategory={() => setShowAddCategory(true)}
-            />
-          </div>
-
-          {/* Products Grid */}
-          <div className="flex-1 px-4 pb-4 overflow-y-auto">
+          {/* Scrollable Products Grid */}
+          <div className="flex-1 overflow-y-auto px-4 pb-4">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredProducts.map(product => (
                 <ProductCard
@@ -153,8 +156,8 @@ const CaissePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Mobile Bottom Actions */}
-          <div className="md:hidden p-4 border-t border-gray-800">
+          {/* Mobile Bottom Actions - Fixed */}
+          <div className="md:hidden flex-shrink-0 p-4 border-t border-gray-800 bg-black">
             <div className="grid grid-cols-2 gap-4 mb-4">
               <button className="bg-gray-900 rounded-xl p-4 flex flex-col items-center">
                 <BarChart3 size={24} className="text-blue-500 mb-2" />
@@ -182,14 +185,14 @@ const CaissePage: React.FC = () => {
         </div>
 
         {/* Right Panel - Cart (Desktop only) */}
-        <div className="hidden md:block w-80 bg-gray-900 border-l border-gray-800">
+        <div className="hidden md:block w-80 bg-gray-900 border-l border-gray-800 flex-shrink-0">
           <CartPanel />
         </div>
       </div>
 
       {/* Mobile Cart Modal */}
       {showCart && (
-        <div className="md:hidden fixed inset-0 bg-black z-50">
+        <div className="md:hidden fixed inset-0 bg-black z-50 flex flex-col">
           <CartPanel isMobile onClose={() => setShowCart(false)} />
         </div>
       )}
@@ -213,25 +216,27 @@ const CaissePage: React.FC = () => {
   // Cart Panel Component
   function CartPanel({ isMobile = false, onClose }: { isMobile?: boolean; onClose?: () => void }) {
     return (
-      <div className="h-full flex flex-col">
-        {/* Header */}
-        <div className="p-4 border-b border-gray-800 flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-semibold">Nouvelle commande</h2>
-            <p className="text-sm text-gray-400">{cart.length} Produits</p>
+      <div className="h-full flex flex-col overflow-hidden">
+        {/* Fixed Header */}
+        <div className="flex-shrink-0 p-4 border-b border-gray-800 bg-gray-900">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold">Nouvelle commande</h2>
+              <p className="text-sm text-gray-400">{cart.length} Produits</p>
+            </div>
+            {isMobile && (
+              <button onClick={onClose} className="text-gray-400 hover:text-white">
+                <Trash2 size={20} />
+              </button>
+            )}
           </div>
-          {isMobile && (
-            <button onClick={onClose} className="text-gray-400">
-              <Trash2 size={20} />
-            </button>
-          )}
         </div>
 
-        {/* Customer Section */}
-        <div className="p-4 border-b border-gray-800">
+        {/* Fixed Customer Section */}
+        <div className="flex-shrink-0 p-4 border-b border-gray-800 bg-gray-900">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-              <span className="text-white font-semibold">CN</span>
+              <span className="text-white font-semibold text-sm">CN</span>
             </div>
             <div>
               <p className="font-medium">Ajouter un client</p>
@@ -240,18 +245,18 @@ const CaissePage: React.FC = () => {
           </div>
         </div>
 
-        {/* Cart Items */}
-        <div className="flex-1 overflow-y-auto">
+        {/* Scrollable Cart Items */}
+        <div className="flex-1 overflow-y-auto bg-gray-900">
           {cart.length === 0 ? (
-            <div className="p-4 text-center text-gray-400">
+            <div className="p-4 text-center text-gray-400 h-full flex flex-col items-center justify-center">
               <ShoppingCart size={48} className="mx-auto mb-4 opacity-50" />
               <p>Aucun article dans le panier</p>
             </div>
           ) : (
             <div className="p-4 space-y-4">
               {cart.map(item => (
-                <div key={item.id} className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gray-800 rounded-lg overflow-hidden">
+                <div key={item.id} className="flex items-center space-x-3 bg-gray-800 p-3 rounded-lg">
+                  <div className="w-12 h-12 bg-gray-700 rounded-lg overflow-hidden flex-shrink-0">
                     {item.product.image ? (
                       <img 
                         src={item.product.image} 
@@ -259,31 +264,33 @@ const CaissePage: React.FC = () => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gray-700"></div>
+                      <div className="w-full h-full bg-gray-600 flex items-center justify-center">
+                        <span className="text-xs text-gray-400">IMG</span>
+                      </div>
                     )}
                   </div>
-                  <div className="flex-1">
-                    <h4 className="font-medium">{item.product.name}</h4>
-                    <p className="text-sm text-gray-400">{item.product.variant || 'Variant / Variant'}</p>
-                    <p className="text-sm font-bold">{item.total.toFixed(2)} FCFA</p>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-medium text-white text-sm truncate">{item.product.name}</h4>
+                    <p className="text-xs text-gray-400">{item.product.variant || 'Variant / Variant'}</p>
+                    <p className="text-sm font-bold text-white">{item.total.toFixed(2)} FCFA</p>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 flex-shrink-0">
                     <button
                       onClick={() => updateQuantity(item.id, -1)}
-                      className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center"
+                      className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors"
                     >
-                      <span className="text-white">-</span>
+                      <span className="text-white text-lg">-</span>
                     </button>
-                    <span className="w-8 text-center">{item.quantity}</span>
+                    <span className="w-8 text-center text-white font-medium">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.id, 1)}
-                      className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center"
+                      className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors"
                     >
-                      <Plus size={16} />
+                      <Plus size={16} className="text-white" />
                     </button>
                     <button
                       onClick={() => removeFromCart(item.id)}
-                      className="text-red-500 ml-2"
+                      className="text-red-500 hover:text-red-400 ml-2 p-1"
                     >
                       <Trash2 size={16} />
                     </button>
@@ -294,22 +301,27 @@ const CaissePage: React.FC = () => {
           )}
         </div>
 
-        {/* Summary */}
+        {/* Fixed Summary and Payment Section */}
         {cart.length > 0 && (
-          <div className="p-4 border-t border-gray-800 space-y-3">
-            <div className="flex justify-between">
-              <span>Subtotal</span>
-              <span>{subtotal.toFixed(2)} FCFA</span>
+          <div className="flex-shrink-0 p-4 border-t border-gray-800 bg-gray-900 space-y-4">
+            {/* Summary */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-gray-300">
+                <span>Subtotal</span>
+                <span>{subtotal.toFixed(2)} FCFA</span>
+              </div>
+              <div className="flex justify-between text-gray-300">
+                <span>Discount</span>
+                <span>-{discount.toFixed(2)} FCFA</span>
+              </div>
+              <div className="flex justify-between text-gray-300">
+                <span>Taxes</span>
+                <span>{taxes.toFixed(2)} FCFA</span>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span>Discount</span>
-              <span>-{discount.toFixed(2)} FCFA</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Taxes</span>
-              <span>{taxes.toFixed(2)} FCFA</span>
-            </div>
-            <button className="w-full bg-blue-600 rounded-xl py-4 font-semibold">
+            
+            {/* Payment Button */}
+            <button className="w-full bg-blue-600 hover:bg-blue-700 rounded-xl py-4 font-semibold text-white transition-colors">
               Encaisser {total.toFixed(2)}FCFA
             </button>
           </div>

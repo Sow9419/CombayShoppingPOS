@@ -13,67 +13,107 @@ interface Props {
   onRemoveFromCart: (id: string) => void;
   /** Fonction pour gérer le paiement */
   onPayment: (method: 'cash' | 'card' | 'partial') => void;
+  /** Mode mobile */
+  isMobile?: boolean;
+  /** Fonction de fermeture pour mobile */
+  onClose?: () => void;
 }
 
 /**
- * Affiche le panneau du panier.
- * Sur les écrans de bureau, il est fixé à droite.
- * Sur les écrans mobiles, il est initialement masqué et s'ouvre en modal.
+ * Panneau de panier optimisé avec sections fixes et scrollables
  */
-const CartPanel: React.FC<Props> = ({ cart, onUpdateQuantity, onRemoveFromCart, onPayment }) => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-
+const CartPanel: React.FC<Props> = ({ 
+  cart, 
+  onUpdateQuantity, 
+  onRemoveFromCart, 
+  onPayment,
+  isMobile = false,
+  onClose
+}) => {
   const subtotal = cart.reduce((sum, item) => sum + item.total, 0);
   const tax = subtotal * 0.2;
-  const total = subtotal + tax;
+  const discount = 0;
+  const total = subtotal + tax - discount;
 
-  /**
-   * Le contenu du panier, réutilisé pour les vues de bureau et mobile.
-   */
-  const cartContent = (
-    <div className="flex flex-col h-full">
-      {/* En-tête du panier mobile */}
-      <div className="p-4 bg-gray-800 flex justify-between items-center lg:hidden">
-        <h2 className="text-xl font-semibold text-white">Panier</h2>
-        <button onClick={() => setIsCartOpen(false)} className="text-white">
-          <X size={24} />
-        </button>
+  return (
+    <div className="h-full flex flex-col overflow-hidden bg-gray-900">
+      {/* Fixed Header */}
+      <div className="flex-shrink-0 p-4 border-b border-gray-800">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-white">Nouvelle commande</h2>
+            <p className="text-sm text-gray-400">{cart.length} Produits</p>
+          </div>
+          {isMobile && (
+            <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors">
+              <X size={24} />
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Liste des articles du panier */}
-      <div className="p-4 flex-grow overflow-y-auto">
+      {/* Fixed Customer Section */}
+      <div className="flex-shrink-0 p-4 border-b border-gray-800">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+            <span className="text-white font-semibold text-sm">CN</span>
+          </div>
+          <div>
+            <p className="font-medium text-white">Ajouter un client</p>
+            <p className="text-sm text-gray-400">12 orders • customer@email.com</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Scrollable Cart Items */}
+      <div className="flex-1 overflow-y-auto">
         {cart.length === 0 ? (
-          <p className="text-gray-400 text-center py-8">Aucun article dans le panier</p>
+          <div className="p-4 text-center text-gray-400 h-full flex flex-col items-center justify-center">
+            <ShoppingCart size={48} className="mx-auto mb-4 opacity-50" />
+            <p>Aucun article dans le panier</p>
+          </div>
         ) : (
-          <div className="space-y-3">
+          <div className="p-4 space-y-4">
             {cart.map(item => (
-              <div key={item.id} className="p-3 bg-gray-700 rounded-lg">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-medium text-white text-sm">{item.product.name}</h4>
+              <div key={item.id} className="flex items-center space-x-3 bg-gray-800 p-3 rounded-lg">
+                <div className="w-12 h-12 bg-gray-700 rounded-lg overflow-hidden flex-shrink-0">
+                  {item.product.image ? (
+                    <img 
+                      src={item.product.image} 
+                      alt={item.product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-600 flex items-center justify-center">
+                      <span className="text-xs text-gray-400">IMG</span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-medium text-white text-sm truncate">{item.product.name}</h4>
+                  <p className="text-xs text-gray-400">{item.product.variant || 'Variant / Variant'}</p>
+                  <p className="text-sm font-bold text-white">{item.total.toFixed(2)} FCFA</p>
+                </div>
+                <div className="flex items-center space-x-2 flex-shrink-0">
+                  <button
+                    onClick={() => onUpdateQuantity(item.id, -1)}
+                    className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors"
+                  >
+                    <Minus size={14} className="text-white" />
+                  </button>
+                  <span className="w-8 text-center text-white font-medium">{item.quantity}</span>
+                  <button
+                    onClick={() => onUpdateQuantity(item.id, 1)}
+                    className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors"
+                  >
+                    <Plus size={14} className="text-white" />
+                  </button>
                   <button
                     onClick={() => onRemoveFromCart(item.id)}
-                    className="text-red-400 hover:text-red-300"
+                    className="text-red-500 hover:text-red-400 ml-2 p-1"
                   >
                     <Trash2 size={16} />
                   </button>
-                </div>
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => onUpdateQuantity(item.id, -1)}
-                      className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white hover:bg-gray-500"
-                    >
-                      <Minus size={14} />
-                    </button>
-                    <span className="text-white font-medium w-8 text-center">{item.quantity}</span>
-                    <button
-                      onClick={() => onUpdateQuantity(item.id, 1)}
-                      className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white hover:bg-gray-500"
-                    >
-                      <Plus size={14} />
-                    </button>
-                  </div>
-                  <span className="text-green-400 font-bold">{item.total.toFixed(2)}€</span>
                 </div>
               </div>
             ))}
@@ -81,78 +121,35 @@ const CartPanel: React.FC<Props> = ({ cart, onUpdateQuantity, onRemoveFromCart, 
         )}
       </div>
 
-      {/* Section Total et Paiement */}
+      {/* Fixed Summary and Payment Section */}
       {cart.length > 0 && (
-        <div className="p-4 border-t border-gray-700 bg-gray-800">
-          <h2 className="text-xl font-semibold text-white mb-4">Total</h2>
+        <div className="flex-shrink-0 p-4 border-t border-gray-800 space-y-4">
+          {/* Summary */}
           <div className="space-y-2">
             <div className="flex justify-between text-gray-300">
-              <span>Sous-total:</span>
-              <span>{subtotal.toFixed(2)}€</span>
+              <span>Subtotal</span>
+              <span>{subtotal.toFixed(2)} FCFA</span>
             </div>
             <div className="flex justify-between text-gray-300">
-              <span>TVA (20%):</span>
-              <span>{tax.toFixed(2)}€</span>
+              <span>Discount</span>
+              <span>-{discount.toFixed(2)} FCFA</span>
             </div>
-            <div className="flex justify-between text-xl font-bold text-white border-t border-gray-600 pt-2">
-              <span>Total:</span>
-              <span>{total.toFixed(2)}€</span>
+            <div className="flex justify-between text-gray-300">
+              <span>Taxes</span>
+              <span>{tax.toFixed(2)} FCFA</span>
             </div>
           </div>
-
-          <div className="mt-6 space-y-3">
-            <Button onClick={() => onPayment('cash')} variant="success" fullWidth>
-              <Banknote size={20} /> <span className="ml-2">Payer en Espèces</span>
-            </Button>
-            <Button onClick={() => onPayment('card')} variant="primary" fullWidth>
-              <CreditCard size={20} /> <span className="ml-2">Payer par Carte</span>
-            </Button>
-            <Button onClick={() => onPayment('partial')} variant="secondary" fullWidth>
-              <Clock size={20} /> <span className="ml-2">Paiement Partiel</span>
-            </Button>
-          </div>
+          
+          {/* Payment Button */}
+          <button 
+            onClick={() => onPayment('cash')}
+            className="w-full bg-blue-600 hover:bg-blue-700 rounded-xl py-4 font-semibold text-white transition-colors"
+          >
+            Encaisser {total.toFixed(2)}FCFA
+          </button>
         </div>
       )}
     </div>
-  );
-
-  return (
-    <>
-      {/* --- Vue Mobile --- */}
-      <div className="lg:hidden">
-        {/* Bouton flottant pour ouvrir le panier */}
-        {cart.length > 0 && (
-          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
-            <button
-              onClick={() => setIsCartOpen(true)}
-              className="bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg flex items-center space-x-3"
-            >
-              <ShoppingCart size={24} />
-              <div>
-                <div className="font-bold">{cart.length} article{cart.length > 1 ? 's' : ''}</div>
-                <div className="text-sm">{total.toFixed(2)}€</div>
-              </div>
-            </button>
-          </div>
-        )}
-
-        {/* Modal du panier */}
-        {isCartOpen && (
-          <div className="fixed inset-0 bg-gray-900 bg-opacity-75 z-40 flex items-center justify-center">
-            <div className="w-full max-w-md bg-gray-800 shadow-xl flex flex-col h-full">
-              {cartContent}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* --- Vue Desktop --- */}
-      <div className="hidden lg:block space-y-6">
-        <Card className="h-full flex flex-col">
-          {cartContent}
-        </Card>
-      </div>
-    </>
   );
 };
 
