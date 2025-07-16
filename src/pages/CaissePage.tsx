@@ -55,10 +55,10 @@ const CaissePage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl md:text-3xl font-bold text-white">Caisse Enregistreuse</h1>
+    <div className="h-screen flex flex-col">
+      <h1 className="text-2xl md:text-3xl font-bold text-white p-6">Caisse Enregistreuse</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6 p-6 overflow-hidden">
         <ProductsGrid
           products={filteredProducts}
           onProductClick={addToCart}

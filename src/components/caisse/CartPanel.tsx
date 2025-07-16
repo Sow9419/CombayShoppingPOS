@@ -31,7 +31,7 @@ const CartPanel: React.FC<Props> = ({ cart, onUpdateQuantity, onRemoveFromCart, 
    * Le contenu du panier, réutilisé pour les vues de bureau et mobile.
    */
   const cartContent = (
-    <>
+    <div className="flex flex-col h-full">
       {/* En-tête du panier mobile */}
       <div className="p-4 bg-gray-800 flex justify-between items-center lg:hidden">
         <h2 className="text-xl font-semibold text-white">Panier</h2>
@@ -113,7 +113,7 @@ const CartPanel: React.FC<Props> = ({ cart, onUpdateQuantity, onRemoveFromCart, 
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 
   return (
@@ -122,22 +122,24 @@ const CartPanel: React.FC<Props> = ({ cart, onUpdateQuantity, onRemoveFromCart, 
       <div className="lg:hidden">
         {/* Bouton flottant pour ouvrir le panier */}
         {cart.length > 0 && (
-          <button
-            onClick={() => setIsCartOpen(true)}
-            className="fixed bottom-4 right-4 bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg flex items-center space-x-3 z-50"
-          >
-            <ShoppingCart size={24} />
-            <div>
-              <div className="font-bold">{cart.length} article{cart.length > 1 ? 's' : ''}</div>
-              <div className="text-sm">{total.toFixed(2)}€</div>
-            </div>
-          </button>
+          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className="bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg flex items-center space-x-3"
+            >
+              <ShoppingCart size={24} />
+              <div>
+                <div className="font-bold">{cart.length} article{cart.length > 1 ? 's' : ''}</div>
+                <div className="text-sm">{total.toFixed(2)}€</div>
+              </div>
+            </button>
+          </div>
         )}
 
         {/* Modal du panier */}
         {isCartOpen && (
-          <div className="fixed inset-0 bg-gray-900 bg-opacity-75 z-40">
-            <div className="fixed inset-y-0 right-0 w-full max-w-md bg-gray-800 shadow-xl flex flex-col">
+          <div className="fixed inset-0 bg-gray-900 bg-opacity-75 z-40 flex items-center justify-center">
+            <div className="w-full max-w-md bg-gray-800 shadow-xl flex flex-col h-full">
               {cartContent}
             </div>
           </div>
@@ -146,10 +148,8 @@ const CartPanel: React.FC<Props> = ({ cart, onUpdateQuantity, onRemoveFromCart, 
 
       {/* --- Vue Desktop --- */}
       <div className="hidden lg:block space-y-6">
-        <Card>
-          <div className="flex flex-col h-full">
-            {cartContent}
-          </div>
+        <Card className="h-full flex flex-col">
+          {cartContent}
         </Card>
       </div>
     </>

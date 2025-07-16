@@ -15,6 +15,7 @@ interface Props {
 
 /**
  * Affiche une grille de produits avec une barre de recherche.
+ * La grille de produits est défilable.
  */
 const ProductsGrid: React.FC<Props> = ({
   products,
@@ -23,7 +24,7 @@ const ProductsGrid: React.FC<Props> = ({
   onSearchTermChange,
 }) => {
   return (
-    <div className="lg:col-span-2">
+    <div className="lg:col-span-2 flex flex-col h-full">
       {/* Barre de recherche */}
       <div className="mb-4">
         <input
@@ -36,7 +37,7 @@ const ProductsGrid: React.FC<Props> = ({
       </div>
 
       {/* Grille de produits */}
-      <Card>
+      <Card className="flex-grow overflow-y-auto">
         <h2 className="text-xl font-semibold text-white mb-4">Produits</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {products.map(product => (
