@@ -83,21 +83,8 @@ export function HeroGeometric({
     title2 = "Vision Numérique",
     onStartClick,
 }: HeroGeometricProps) {
-    const fadeUpVariants = {
-        hidden: { opacity: 0, y: 30 },
-        visible: (i: number) => ({
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 1,
-                delay: 0.5 + i * 0.2,
-                ease: [0.25, 0.4, 0.25, 1],
-            },
-        }),
-    };
-
     return (
-        <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+        <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-black/80 to-black/80">
             {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
 
@@ -151,17 +138,28 @@ export function HeroGeometric({
 
             {/* Main content */}
             <div className="relative z-10 container mx-auto px-4 md:px-6">
-                <div className="max-w-4xl mx-auto text-center pt-4">
+                <div className="max-w-4xl mx-auto text-center pt-16">
                     {/* Badge */}
                     <motion.div
                         custom={0}
-                        variants={fadeUpVariants}
+                        variants={{
+                            hidden: { opacity: 0, y: 30 },
+                            visible: {
+                                opacity: 1,
+                                y: 0,
+                                transition: {
+                                    duration: 1,
+                                    delay: 0.5,
+                                    ease: "easeOut"
+                                }
+                            }
+                        }}
                         initial="hidden"
                         animate="visible"
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.08] border border-white/[0.15] mb-8 md:mb-12 backdrop-blur-sm"
                     >
                         <Circle className="h-3 w-3 fill-blue-400 text-blue-400" />
-                        <span className="text-sm text-white/80 tracking-wide font-medium">
+                        <span className="text-sm text-white/80 tracking-wide font-medium ">
                             {badge}
                         </span>
                     </motion.div>
@@ -169,7 +167,18 @@ export function HeroGeometric({
                     {/* Main title */}
                     <motion.div
                         custom={1}
-                        variants={fadeUpVariants}
+                        variants={{
+                            hidden: { opacity: 0, y: 30 },
+                            visible: {
+                                opacity: 1,
+                                y: 0,
+                                transition: {
+                                    duration: 1,
+                                    delay: 0.5,
+                                    ease: "easeOut"
+                                }
+                            }
+                        }}
                         initial="hidden"
                         animate="visible"
                     >
@@ -186,7 +195,18 @@ export function HeroGeometric({
                     {/* Subtitle */}
                     <motion.div
                         custom={2}
-                        variants={fadeUpVariants}
+                        variants={{
+                            hidden: { opacity: 0, y: 30 },
+                            visible: {
+                                opacity: 1,
+                                y: 0,
+                                transition: {
+                                    duration: 1,
+                                    delay: 0.5,
+                                    ease: "easeOut"
+                                }
+                            }
+                        }}
                         initial="hidden"
                         animate="visible"
                     >
@@ -198,7 +218,18 @@ export function HeroGeometric({
                     {/* CTA Button */}
                     <motion.div
                         custom={3}
-                        variants={fadeUpVariants}
+                        variants={{
+                            hidden: { opacity: 0, y: 30 },
+                            visible: {
+                                opacity: 1,
+                                y: 0,
+                                transition: {
+                                    duration: 1,
+                                    delay: 0.5,
+                                    ease: "easeOut"
+                                }
+                            }
+                        }}
                         initial="hidden"
                         animate="visible"
                         className="flex justify-center mb-16"
@@ -235,7 +266,18 @@ export function HeroGeometric({
                     {/* Stats */}
                     <motion.div
                         custom={4}
-                        variants={fadeUpVariants}
+                        variants={{
+                            hidden: { opacity: 0, y: 30 },
+                            visible: {
+                                opacity: 1,
+                                y: 0,
+                                transition: {
+                                    duration: 1,
+                                    delay: 0.5,
+                                    ease: "easeOut"
+                                }
+                            }
+                        }}
                         initial="hidden"
                         animate="visible"
                         className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto"

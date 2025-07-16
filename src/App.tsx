@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { HeroGeometric } from './components/ui/shape-landing-hero';
 import { LoginDialog } from './components/dialogs/LoginDialog';
 import { SignupDialog } from './components/dialogs/SignupDialog';
