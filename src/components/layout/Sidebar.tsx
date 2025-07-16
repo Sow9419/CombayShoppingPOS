@@ -1,6 +1,7 @@
 import React from 'react';
 import { Home, ShoppingCart, Package, BarChart3, Users, User, LogOut } from 'lucide-react';
 import { NavigationItem } from '../../types';
+import { useAuth } from '../../hooks/useAuth';
 
 interface SidebarProps {
   currentPath: string;
@@ -8,6 +9,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => {
+  const { signOut } = useAuth();
+
   const navigationItems: NavigationItem[] = [
     { label: 'Caisse', path: '/caisse', icon: <Home size={24} /> },
     { label: 'Ventes', path: '/ventes', icon: <ShoppingCart size={24} /> },
@@ -15,6 +18,11 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => {
     { label: 'Dashboard', path: '/dashboard', icon: <BarChart3 size={24} /> },
     { label: 'Contacts', path: '/contacts', icon: <Users size={24} /> },
   ];
+
+  const handleSignOut = async () => {
+    await signOut();
+    // La redirection sera gérée automatiquement par useAuth
+  };
 
   return (
     <div className="hidden md:flex md:flex-col md:fixed md:inset-y-0 md:w-16 bg-black border-r border-gray-800">
@@ -54,7 +62,11 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => {
         <button className="w-12 h-12 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 transition-all duration-200">
           <User size={24} />
         </button>
-        <button className="w-12 h-12 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 transition-all duration-200">
+        <button 
+          onClick={handleSignOut}
+          className="w-12 h-12 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 transition-all duration-200"
+          title="Se déconnecter"
+        >
           <LogOut size={24} />
         </button>
       </div>
