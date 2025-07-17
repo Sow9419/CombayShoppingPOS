@@ -19,7 +19,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, onNavigate }) =>
       <MobileHeader />
       
       {/* Main Content */}
-      <main className="md:ml-16 pt-16 md:pt-0 pb-20 md:pb-0 min-h-screen">
+      <main className="md:ml-16 pt-16 md:pt-0 pb-20 md:pb-0 min-h-screen bg-black">
         <div className="p-0 md:p-0">
           {children}
         </div>

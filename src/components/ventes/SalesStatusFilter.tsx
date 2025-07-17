@@ -73,7 +73,7 @@ const SalesStatusFilter: React.FC<SalesStatusFilterProps> = ({
           key={item.id}
           onClick={() => onStatusChange(item.id)}
           className={`
-            w-full flex items-center justify-between p-4 rounded-xl transition-all duration-200
+            w-full flex items-center justify-between p-2 rounded-xl transition-all duration-200
             ${activeStatus === item.id
               ? `${item.bgColor} ${item.borderColor} border-2 ${item.color}`
               : 'bg-gray-800/50 border border-gray-700 text-gray-300 hover:bg-gray-800 hover:border-gray-600'

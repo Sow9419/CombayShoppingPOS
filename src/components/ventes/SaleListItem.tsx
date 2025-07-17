@@ -89,27 +89,30 @@ const SaleListItem: React.FC<SaleListItemProps> = ({ sale, onClick }) => {
   return (
     <div
       onClick={() => onClick(sale)}
-      className="bg-gray-800/50 border border-gray-700 rounded-xl p-4 hover:bg-gray-800 hover:border-gray-600 transition-all duration-200 cursor-pointer group"
+      className=" border-b border-gray-700  p-2 hover:bg-gray-800/40  transition-all duration-200 cursor-pointer group"
     >
       {/* Header avec ID et montant */}
-      <div className="flex items-start justify-between mb-3">
+      <div className="flex items-start justify-between mb-1">
         <div>
           <h3 className="text-white font-semibold text-lg group-hover:text-blue-400 transition-colors">
             {sale.orderNumber}
           </h3>
-          <p className="text-gray-300 font-medium">{sale.productName}</p>
         </div>
-        <div className="text-right">
+        <div className="text-right ">
           <p className="text-white font-bold text-lg">{sale.amount.toFixed(3)}FCFA</p>
         </div>
       </div>
 
-      {/* Date et heure */}
-      <div className="flex items-center space-x-2 mb-3">
+      
+      <div className='flex items-center justify-between pb-1'>
+        <p className="text-gray-300 font-medium">{sale.productName}</p>
+        {/* Date et heure */}
+        <div className="flex items-center space-x-2">
         <Clock size={16} className="text-gray-400" />
         <span className="text-gray-400 text-sm">
           {sale.date} à {sale.time}
         </span>
+      </div>
       </div>
 
       {/* Status badges et stock */}

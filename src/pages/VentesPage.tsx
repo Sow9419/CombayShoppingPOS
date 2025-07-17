@@ -162,7 +162,7 @@ const VentesPage: React.FC = () => {
   };
 
   return (
-    <div className="h-screen bg-black text-white flex flex-col overflow-hidden">
+    <div className="h-screen bg-black md:bg-gray-900/50 text-white flex flex-col overflow-hidden">
       {/* Mobile Layout */}
       <div className="md:hidden flex flex-col h-full">
         {/* Mobile Header avec filtres de statut horizontaux */}
@@ -220,7 +220,7 @@ const VentesPage: React.FC = () => {
       {/* Desktop Layout */}
       <div className="hidden md:flex h-full">
         {/* Left Sidebar - Status Filters */}
-        <div className="w-80 flex-shrink-0 bg-gray-900/50 border-r border-gray-800 p-6">
+        <div className="w-80 flex-shrink-0 bg-black border-r border-gray-800 p-6">
           <h2 className="text-xl font-bold text-white mb-6">Filtres</h2>
           <SalesStatusFilter
             activeStatus={activeStatus}

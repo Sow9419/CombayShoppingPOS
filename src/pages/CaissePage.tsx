@@ -200,9 +200,9 @@ const CaissePage: React.FC = () => {
   // Cart Panel Component
   function CartPanel({ isMobile = false, onClose }: { isMobile?: boolean; onClose?: () => void }) {
     return (
-      <div className="h-full flex flex-col overflow-hidden">
+      <div className="h-full flex flex-col overflow-hidden bg-black">
         {/* Fixed Header */}
-        <div className="flex-shrink-0 p-4 border-b border-gray-800 md:bg-gray-900 bg-black">
+        <div className="flex-shrink-0 p-4 border-b border-gray-800 md:bg-gray-900/50 bg-black">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold">Nouvelle commande</h2>
@@ -217,7 +217,7 @@ const CaissePage: React.FC = () => {
         </div>
 
         {/* Fixed Customer Section */}
-        <div className="flex-shrink-0 p-4 border-b border-gray-800 md:bg-gray-900 bg-black">
+        <div className="flex-shrink-0 p-4 border-b border-gray-800 md:bg-gray-900/50 bg-black">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
               <span className="text-white font-semibold text-sm">CN</span>
@@ -230,7 +230,7 @@ const CaissePage: React.FC = () => {
         </div>
 
         {/* Scrollable Cart Items */}
-        <div className="flex-1 overflow-y-auto md:bg-gray-900 bg-black">
+        <div className="flex-1 overflow-y-auto md:bg-gray-900/50 bg-black">
           {cart.length === 0 ? (
             <div className="p-4 text-center text-gray-400 h-full flex flex-col items-center justify-center">
               <ShoppingCart size={48} className="mx-auto mb-4 opacity-50" />
@@ -287,7 +287,7 @@ const CaissePage: React.FC = () => {
 
         {/* Fixed Summary and Payment Section */}
         {cart.length > 0 && (
-          <div className="flex-shrink-0 p-4 border-t border-gray-800 md:bg-gray-900 bg-black space-y-4">
+          <div className="flex-shrink-0 p-4 border-t border-gray-800 md:bg-gray-900/50 bg-black space-y-4">
             {/* Summary */}
             <div className="space-y-2">
               <div className="flex justify-between text-gray-300">

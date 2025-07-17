@@ -13,7 +13,7 @@ const SalesList: React.FC<SalesListProps> = ({ sales, onSaleClick, loading = fal
     return (
       <div className="space-y-4">
         {[...Array(5)].map((_, index) => (
-          <div key={index} className="bg-gray-800/50 border border-gray-700 rounded-xl p-4 animate-pulse">
+          <div key={index} className="bg-gray-800/50 border border-gray-700 rounded-xl p-2 animate-pulse">
             <div className="flex justify-between items-start mb-3">
               <div className="space-y-2">
                 <div className="h-5 bg-gray-700 rounded w-32"></div>
@@ -54,7 +54,7 @@ const SalesList: React.FC<SalesListProps> = ({ sales, onSaleClick, loading = fal
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-0">
       {sales.map((sale) => (
         <SaleListItem
           key={sale.id}
