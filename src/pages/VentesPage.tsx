@@ -1,161 +1,265 @@
-import React, { useState } from 'react';
-import { Eye, CheckCircle, XCircle, Clock, Search } from 'lucide-react';
-import Card from '../components/common/Card';
-import Button from '../components/common/Button';
-import { mockSales, mockCustomers } from '../data/mockData';
+import React, { useState, useMemo } from 'react';
+import SalesStatusFilter from '../components/ventes/SalesStatusFilter';
+import SearchBarAndFilters from '../components/ventes/SearchBarAndFilters';
+import SalesList from '../components/ventes/SalesList';
+import SaleDetailModal from '../components/ventes/SaleDetailModal';
+
+// Mock data pour les ventes
+const mockSalesData = [
+  {
+    id: '1',
+    orderNumber: 'ODR-3678',
+    productName: 'T-shirt',
+    date: "Aujourd'hui",
+    time: '1:22 PM',
+    amount: 6.000,
+    paymentStatus: 'paid',
+    transactionStatus: 'complete',
+    stock: 8,
+    type: 'vetement',
+  },
+  {
+    id: '2',
+    orderNumber: 'ODR-3678',
+    productName: 'T-shirt',
+    date: "Aujourd'hui",
+    time: '1:22 PM',
+    amount: 6.000,
+    paymentStatus: 'partial',
+    transactionStatus: 'complete',
+    stock: 8,
+    type: 'vetement',
+  },
+  {
+    id: '3',
+    orderNumber: 'ODR-3678',
+    productName: 'T-shirt',
+    date: "Aujourd'hui",
+    time: '1:22 PM',
+    amount: 6.000,
+    paymentStatus: 'paid',
+    transactionStatus: 'complete',
+    stock: 8,
+    type: 'vetement',
+  },
+  {
+    id: '4',
+    orderNumber: 'ODR-3678',
+    productName: 'T-shirt',
+    date: "Aujourd'hui",
+    time: '1:22 PM',
+    amount: 6.000,
+    paymentStatus: 'paid',
+    transactionStatus: 'complete',
+    stock: 8,
+    type: 'vetement',
+  },
+  {
+    id: '5',
+    orderNumber: 'ODR-3678',
+    productName: 'T-shirt',
+    date: "Aujourd'hui",
+    time: '1:22 PM',
+    amount: 6.000,
+    paymentStatus: 'cancelled',
+    transactionStatus: 'incomplete',
+    stock: 8,
+    type: 'vetement',
+  },
+  {
+    id: '6',
+    orderNumber: 'ODR-3616',
+    productName: 'Chemise',
+    date: '12/06/2025',
+    time: '3:22 PM',
+    amount: 10.000,
+    paymentStatus: 'credit',
+    transactionStatus: 'incomplete',
+    stock: 8,
+    type: 'vetement',
+  },
+  {
+    id: '7',
+    orderNumber: 'ODR-3678',
+    productName: 'T-shirt',
+    date: "Aujourd'hui",
+    time: '1:22 PM',
+    amount: 6.000,
+    paymentStatus: 'paid',
+    transactionStatus: 'complete',
+    stock: 8,
+    type: 'vetement',
+  },
+  {
+    id: '8',
+    orderNumber: 'ODR-3678',
+    productName: 'T-shirt',
+    date: "Aujourd'hui",
+    time: '1:22 PM',
+    amount: 6.000,
+    paymentStatus: 'paid',
+    transactionStatus: 'complete',
+    stock: 8,
+    type: 'vetement',
+  },
+];
 
 const VentesPage: React.FC = () => {
+  const [activeStatus, setActiveStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'completed' | 'pending' | 'cancelled'>('all');
+  const [saleType, setSaleType] = useState('all');
+  const [dateFilter, setDateFilter] = useState('today');
+  const [selectedSale, setSelectedSale] = useState(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
 
-  const filteredSales = mockSales.filter(sale => {
-    const customer = mockCustomers.find(c => c.id === sale.customerId);
-    const matchesSearch = customer?.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         sale.id.includes(searchTerm);
-    const matchesStatus = statusFilter === 'all' || sale.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  // Calcul des compteurs de statuts
+  const statusCounts = useMemo(() => {
+    return {
+      all: mockSalesData.length,
+      paid: mockSalesData.filter(sale => sale.paymentStatus === 'paid').length,
+      partial: mockSalesData.filter(sale => sale.paymentStatus === 'partial').length,
+      cancelled: mockSalesData.filter(sale => sale.paymentStatus === 'cancelled').length,
+      credit: mockSalesData.filter(sale => sale.paymentStatus === 'credit').length,
+    };
+  }, []);
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'completed': return <CheckCircle className="text-green-400" size={20} />;
-      case 'pending': return <Clock className="text-yellow-400" size={20} />;
-      case 'cancelled': return <XCircle className="text-red-400" size={20} />;
-      default: return null;
-    }
+  // Filtrage des ventes
+  const filteredSales = useMemo(() => {
+    return mockSalesData.filter(sale => {
+      // Filtre par statut
+      if (activeStatus !== 'all' && sale.paymentStatus !== activeStatus) {
+        return false;
+      }
+
+      // Filtre par recherche
+      if (searchTerm && !sale.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) &&
+          !sale.productName.toLowerCase().includes(searchTerm.toLowerCase())) {
+        return false;
+      }
+
+      // Filtre par type
+      if (saleType !== 'all' && sale.type !== saleType) {
+        return false;
+      }
+
+      // Filtre par date (simplifié pour la démo)
+      if (dateFilter === 'today' && sale.date !== "Aujourd'hui") {
+        return false;
+      }
+
+      return true;
+    });
+  }, [activeStatus, searchTerm, saleType, dateFilter]);
+
+  const handleSaleClick = (sale: any) => {
+    setSelectedSale(sale);
+    setShowDetailModal(true);
   };
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'completed': return 'Terminée';
-      case 'pending': return 'En attente';
-      case 'cancelled': return 'Annulée';
-      default: return status;
-    }
+  const handleCloseModal = () => {
+    setShowDetailModal(false);
+    setSelectedSale(null);
   };
-
-  const totalRevenue = mockSales
-    .filter(sale => sale.status === 'completed')
-    .reduce((sum, sale) => sum + sale.total, 0);
-
-  const pendingSales = mockSales.filter(sale => sale.status === 'pending').length;
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-        <h1 className="text-2xl md:text-3xl font-bold text-white">Gestion des Ventes</h1>
+    <div className="h-screen bg-black text-white flex flex-col overflow-hidden">
+      {/* Mobile Layout */}
+      <div className="md:hidden flex flex-col h-full">
+        {/* Mobile Header avec filtres de statut horizontaux */}
+        <div className="flex-shrink-0 p-4 border-b border-gray-800">
+          <div className="flex space-x-2 overflow-x-auto pb-2 mb-4">
+            {[
+              { id: 'all', label: 'Tous', count: statusCounts.all },
+              { id: 'paid', label: 'Payé', count: statusCounts.paid },
+              { id: 'partial', label: 'Partiel', count: statusCounts.partial },
+              { id: 'cancelled', label: 'Annulé', count: statusCounts.cancelled },
+              { id: 'credit', label: 'Crédits', count: statusCounts.credit },
+            ].map((status) => (
+              <button
+                key={status.id}
+                onClick={() => setActiveStatus(status.id)}
+                className={`
+                  flex-shrink-0 flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all
+                  ${activeStatus === status.id
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  }
+                `}
+              >
+                <span>{status.label}</span>
+                <span className={`
+                  px-2 py-0.5 rounded-full text-xs
+                  ${activeStatus === status.id ? 'bg-white/20' : 'bg-gray-700'}
+                `}>
+                  {status.count}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <SearchBarAndFilters
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            saleType={saleType}
+            onSaleTypeChange={setSaleType}
+            dateFilter={dateFilter}
+            onDateFilterChange={setDateFilter}
+            isMobile={true}
+          />
+        </div>
+
+        {/* Mobile Content - Scrollable */}
+        <div className="flex-1 overflow-y-auto p-4">
+          <SalesList
+            sales={filteredSales}
+            onSaleClick={handleSaleClick}
+          />
+        </div>
       </div>
 
-      {/* Statistiques */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-sm">Chiffre d'affaires</p>
-              <p className="text-2xl font-bold text-green-400">{totalRevenue.toFixed(2)}€</p>
-            </div>
-            <CheckCircle className="text-green-400" size={32} />
+      {/* Desktop Layout */}
+      <div className="hidden md:flex h-full">
+        {/* Left Sidebar - Status Filters */}
+        <div className="w-80 flex-shrink-0 bg-gray-900/50 border-r border-gray-800 p-6">
+          <h2 className="text-xl font-bold text-white mb-6">Filtres</h2>
+          <SalesStatusFilter
+            activeStatus={activeStatus}
+            onStatusChange={setActiveStatus}
+            statusCounts={statusCounts}
+          />
+        </div>
+
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Header avec recherche et filtres */}
+          <div className="flex-shrink-0 p-6 border-b border-gray-800">
+            <SearchBarAndFilters
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              saleType={saleType}
+              onSaleTypeChange={setSaleType}
+              dateFilter={dateFilter}
+              onDateFilterChange={setDateFilter}
+              isMobile={false}
+            />
           </div>
-        </Card>
-        
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-sm">Ventes totales</p>
-              <p className="text-2xl font-bold text-white">{mockSales.length}</p>
-            </div>
-            <Eye className="text-blue-400" size={32} />
+
+          {/* Content - Scrollable */}
+          <div className="flex-1 overflow-y-auto p-6">
+            <SalesList
+              sales={filteredSales}
+              onSaleClick={handleSaleClick}
+            />
           </div>
-        </Card>
-        
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-sm">En attente</p>
-              <p className="text-2xl font-bold text-yellow-400">{pendingSales}</p>
-            </div>
-            <Clock className="text-yellow-400" size={32} />
-          </div>
-        </Card>
+        </div>
       </div>
 
-      {/* Filtres et recherche */}
-      <Card>
-        <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <input
-                type="text"
-                placeholder="Rechercher par client ou ID de vente..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-          
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as any)}
-            className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="all">Tous les statuts</option>
-            <option value="completed">Terminées</option>
-            <option value="pending">En attente</option>
-            <option value="cancelled">Annulées</option>
-          </select>
-        </div>
-      </Card>
-
-      {/* Liste des ventes */}
-      <Card>
-        <h2 className="text-xl font-semibold text-white mb-4">Historique des Ventes</h2>
-        <div className="space-y-4">
-          {filteredSales.map(sale => {
-            const customer = mockCustomers.find(c => c.id === sale.customerId);
-            return (
-              <div key={sale.id} className="p-4 bg-gray-700 rounded-lg">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      {getStatusIcon(sale.status)}
-                      <span className="font-medium text-white">Vente #{sale.id}</span>
-                      <span className="text-sm text-gray-400">
-                        {new Date(sale.date).toLocaleDateString('fr-FR')}
-                      </span>
-                    </div>
-                    <p className="text-gray-300">
-                      Client: {customer?.name || 'Client anonyme'}
-                    </p>
-                    <p className="text-sm text-gray-400">
-                      {sale.items.length} article(s) - {getStatusText(sale.status)}
-                    </p>
-                  </div>
-                  
-                  <div className="flex items-center space-x-4">
-                    <div className="text-right">
-                      <p className="text-xl font-bold text-green-400">{sale.total.toFixed(2)}€</p>
-                      <p className="text-sm text-gray-400 capitalize">{sale.paymentMethod}</p>
-                    </div>
-                    
-                    <Button size="sm" variant="secondary">
-                      <Eye size={16} />
-                    </Button>
-                  </div>
-                </div>
-                
-                {sale.status === 'pending' && (
-                  <div className="mt-4 flex space-x-2">
-                    <Button size="sm" variant="success">Marquer comme payé</Button>
-                    <Button size="sm" variant="danger">Annuler</Button>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </Card>
+      {/* Modal de détail */}
+      <SaleDetailModal
+        isOpen={showDetailModal}
+        onClose={handleCloseModal}
+        sale={selectedSale}
+      />
     </div>
   );
 };
