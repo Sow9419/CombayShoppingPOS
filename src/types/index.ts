@@ -11,7 +11,7 @@ export interface Product {
   stock: number;
   category: string;
   categoryId: string;
-  barcode?: string;
+  sku?: string;
   image?: string;
   variant?: string;
 }

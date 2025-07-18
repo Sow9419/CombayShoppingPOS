@@ -15,7 +15,7 @@ export const mockProducts: Product[] = [
     stock: 15,
     category: 'Vêtement',
     categoryId: '1',
-    barcode: 'CH-885',
+    sku: 'CH-885',
     image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400',
     variant: 'Variant'
   },
@@ -26,7 +26,7 @@ export const mockProducts: Product[] = [
     stock: 8,
     category: 'Vêtement',
     categoryId: '1',
-    barcode: 'CH-885',
+    sku: 'CH-885',
     image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400',
     variant: 'Variant'
   },
@@ -37,7 +37,7 @@ export const mockProducts: Product[] = [
     stock: 25,
     category: 'Chaussure',
     categoryId: '2',
-    barcode: 'CH-885',
+    sku: 'CH-885',
     variant: 'Variant'
   },
   {
@@ -47,7 +47,7 @@ export const mockProducts: Product[] = [
     stock: 12,
     category: 'Chaussure',
     categoryId: '2',
-    barcode: 'CH-885',
+    sku: 'CH-885',
     image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400',
     variant: 'Variant'
   },
@@ -58,7 +58,7 @@ export const mockProducts: Product[] = [
     stock: 20,
     category: 'Montre',
     categoryId: '3',
-    barcode: 'CH-885',
+    sku: 'CH-885',
     variant: 'Variant'
   },
   {
@@ -68,7 +68,7 @@ export const mockProducts: Product[] = [
     stock: 18,
     category: 'Casquette',
     categoryId: '4',
-    barcode: 'CH-885',
+    sku: 'CH-885',
     image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400',
     variant: 'Variant'
   }

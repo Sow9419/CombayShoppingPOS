@@ -12,7 +12,7 @@ const ProduitsPage: React.FC = () => {
   
   const filteredProducts = mockProducts.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.barcode?.includes(searchTerm);
+                         product.sku?.includes(searchTerm);
     const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
@@ -123,8 +123,8 @@ const ProduitsPage: React.FC = () => {
                 <div className="flex-1">
                   <h3 className="font-medium text-white">{product.name}</h3>
                   <p className="text-sm text-gray-400 mt-1">{product.category}</p>
-                  {product.barcode && (
-                    <p className="text-xs text-gray-500 mt-1">Code: {product.barcode}</p>
+                  {product.sku && (
+                    <p className="text-xs text-gray-500 mt-1">Code: {product.sku}</p>
                   )}
                 </div>
                 <Button size="sm" variant="secondary" className="ml-2">

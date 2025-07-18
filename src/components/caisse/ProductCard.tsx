@@ -30,7 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
         {/* Header avec code et stock */}
         <div className="flex justify-between items-start">
           <span className="bg-black/50 backdrop-blur-sm px-2 py-1 rounded-md text-xs text-white font-medium">
-            {product.barcode}
+            {product.sku}
           </span>
           <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm px-2 py-1 rounded-md">
             <span className="text-xs text-white">Stock : {product.stock}</span>

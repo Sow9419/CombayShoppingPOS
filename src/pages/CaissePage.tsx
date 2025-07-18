@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Search, Plus, ShoppingCart, Trash2, BarChart3 } from 'lucide-react';
+import { Search, Plus, ShoppingCart, BarChart3 } from 'lucide-react';
 import { Product, CartItem, Category } from '../types';
 import { mockProducts, mockCategories } from '../data/mockData';
 import CategoryBar from '../components/caisse/CategoryBar';
 import ProductCard from '../components/caisse/ProductCard';
 import AddProductModal from '../components/caisse/AddProductModal';
 import AddCategoryModal from '../components/caisse/AddCategoryModal';
+import CartPanel from '../components/caisse/CartPanel';
 
 const CaissePage: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -20,7 +21,7 @@ const CaissePage: React.FC = () => {
   // Filtrage des produits
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.barcode?.includes(searchTerm);
+                         product.sku?.includes(searchTerm);
     const matchesCategory = selectedCategory === null || product.categoryId === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -57,6 +58,13 @@ const CaissePage: React.FC = () => {
 
   const removeFromCart = (id: string) => {
     setCart(cart.filter(item => item.id !== id));
+  };
+
+  const handlePayment = (method: 'cash' | 'card' | 'partial') => {
+    // Logique de paiement à implémenter
+    console.log(`Paiement par ${method}`);
+    // Vider le panier après paiement
+    setCart([]);
   };
 
   // Ajout de produit
@@ -169,15 +177,27 @@ const CaissePage: React.FC = () => {
         </div>
 
         {/* Right Panel - Cart (Desktop only) */}
-        <div className="hidden md:block w-80 bg-gray-900 border-l border-gray-800 flex-shrink-0">
-          <CartPanel />
+        <div className="hidden md:block w-96 bg-gray-900 border-l border-gray-800 flex-shrink-0">
+          <CartPanel
+            cart={cart}
+            onUpdateQuantity={updateQuantity}
+            onRemoveFromCart={removeFromCart}
+            onPayment={handlePayment}
+          />
         </div>
       </div>
 
       {/* Mobile Cart Modal */}
       {showCart && (
         <div className="md:hidden fixed inset-0 bg-black z-50 flex flex-col">
-          <CartPanel isMobile onClose={() => setShowCart(false)} />
+          <CartPanel
+            cart={cart}
+            onUpdateQuantity={updateQuantity}
+            onRemoveFromCart={removeFromCart}
+            onPayment={handlePayment}
+            isMobile
+            onClose={() => setShowCart(false)}
+          />
         </div>
       )}
 
@@ -196,123 +216,6 @@ const CaissePage: React.FC = () => {
       />
     </div>
   );
-
-  // Cart Panel Component
-  function CartPanel({ isMobile = false, onClose }: { isMobile?: boolean; onClose?: () => void }) {
-    return (
-      <div className="h-full flex flex-col overflow-hidden bg-black no-scrollbar">
-        {/* Fixed Header */}
-        <div className="flex-shrink-0 p-4 border-b border-gray-800 md:bg-gray-900/50 bg-black">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold">Nouvelle commande</h2>
-              <p className="text-sm text-gray-400">{cart.length} Produits</p>
-            </div>
-            {isMobile && (
-              <button onClick={onClose} className="text-gray-400 hover:text-white">
-                <Trash2 size={20} />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Fixed Customer Section */}
-        <div className="flex-shrink-0 p-4 border-b border-gray-800 md:bg-gray-900/50 bg-black">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">CN</span>
-            </div>
-            <div>
-              <p className="font-medium">Ajouter un client</p>
-              <p className="text-sm text-gray-400">12 orders • customer@email.com</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Scrollable Cart Items */}
-        <div className="flex-1 overflow-y-auto md:bg-gray-900/50 bg-black no-scrollbar">
-          {cart.length === 0 ? (
-            <div className="p-4 text-center text-gray-400 h-full flex flex-col items-center justify-center">
-              <ShoppingCart size={48} className="mx-auto mb-4 opacity-50" />
-              <p>Aucun article dans le panier</p>
-            </div>
-          ) : (
-            <div className="p-4 space-y-4">
-              {cart.map(item => (
-                <div key={item.id} className="flex items-center space-x-3 bg-gray-800 p-3 rounded-lg">
-                  <div className="w-12 h-12 bg-gray-700 rounded-lg overflow-hidden flex-shrink-0">
-                    {item.product.image ? (
-                      <img 
-                        src={item.product.image} 
-                        alt={item.product.name}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-600 flex items-center justify-center">
-                        <span className="text-xs text-gray-400">IMG</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-white text-sm truncate">{item.product.name}</h4>
-                    <p className="text-xs text-gray-400">{item.product.variant || 'Variant / Variant'}</p>
-                    <p className="text-sm font-bold text-white">{item.total.toFixed(2)} FCFA</p>
-                  </div>
-                  <div className="flex items-center space-x-2 flex-shrink-0">
-                    <button
-                      onClick={() => updateQuantity(item.id, -1)}
-                      className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors"
-                    >
-                      <span className="text-white text-lg">-</span>
-                    </button>
-                    <span className="w-8 text-center text-white font-medium">{item.quantity}</span>
-                    <button
-                      onClick={() => updateQuantity(item.id, 1)}
-                      className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors"
-                    >
-                      <Plus size={16} className="text-white" />
-                    </button>
-                    <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="text-red-500 hover:text-red-400 ml-2 p-1"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Fixed Summary and Payment Section */}
-        {cart.length > 0 && (
-          <div className="flex-shrink-0 p-4 border-t border-gray-800 md:bg-gray-900/50 bg-black space-y-4">
-            {/* Summary */}
-            <div className="space-y-2">
-              <div className="flex justify-between text-gray-300">
-                <span>Subtotal</span>
-                <span>{subtotal.toFixed(2)} FCFA</span>
-              </div>
-              <div className="flex justify-between text-gray-300">
-                <span>Discount</span>
-                <span>-{discount.toFixed(2)} FCFA</span>
-              </div>
-              <div className="flex justify-between text-gray-300">
-                <span>Taxes</span>
-                <span>{taxes.toFixed(2)} FCFA</span>
-              </div>
-            </div>
-            
-            {/* Payment Button */}
-            <button className="w-full bg-blue-600 hover:bg-blue-700 rounded-xl py-4 font-semibold text-white transition-colors">
-              Encaisser {total.toFixed(2)}FCFA
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  }
 };
 
 export default CaissePage;

@@ -11,7 +11,7 @@ interface AddProductModalProps {
     price: number;
     stock: number;
     categoryId: string;
-    barcode: string;
+    sku: string;
     image?: string;
     variant?: string;
   }) => void;
@@ -29,7 +29,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
     price: '',
     stock: '',
     categoryId: '',
-    barcode: '',
+    sku: '',
     image: '',
     variant: '',
   });
@@ -47,7 +47,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       price: parseFloat(formData.price),
       stock: parseInt(formData.stock),
       categoryId: formData.categoryId,
-      barcode: formData.barcode || `PRD-${Date.now()}`,
+      sku: formData.sku || `PRD-${Date.now()}`,
       image: formData.image || undefined,
       variant: formData.variant || undefined,
     });
@@ -58,7 +58,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       price: '',
       stock: '',
       categoryId: '',
-      barcode: '',
+      sku: '',
       image: '',
       variant: '',
     });
@@ -157,8 +157,8 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
             </label>
             <input
               type="text"
-              value={formData.barcode}
-              onChange={(e) => setFormData({ ...formData, barcode: e.target.value })}
+              value={formData.sku}
+              onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
               className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="CH-885"
             />
