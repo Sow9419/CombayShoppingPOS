@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, Filter, Calendar, Store, ChevronDown } from 'lucide-react';
+import React from 'react';
+import { Search, ChevronDown } from 'lucide-react';
 
 interface SearchBarAndFiltersProps {
   searchTerm: string;
@@ -20,7 +20,7 @@ const SearchBarAndFilters: React.FC<SearchBarAndFiltersProps> = ({
   onDateFilterChange,
   isMobile = false,
 }) => {
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
 
   const saleTypes = [
     { value: 'all', label: 'Tous les types' },
@@ -52,7 +52,7 @@ const SearchBarAndFilters: React.FC<SearchBarAndFiltersProps> = ({
         </div>
 
         {/* Filtres horizontaux mobile */}
-        <div className="flex space-x-3 overflow-x-auto pb-2">
+        <div className="flex space-x-3 overflow-x-auto pb-2 no-scrollbar">
           <select
             value={saleType}
             onChange={(e) => onSaleTypeChange(e.target.value)}

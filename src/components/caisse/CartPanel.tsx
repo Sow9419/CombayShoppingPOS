@@ -51,21 +51,10 @@ const CartPanel: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* Fixed Customer Section */}
-      <div className="flex-shrink-0 p-4 border-b border-gray-800">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-            <span className="text-white font-semibold text-sm">CN</span>
-          </div>
-          <div>
-            <p className="font-medium text-white">Ajouter un client</p>
-            <p className="text-sm text-gray-400">12 orders • customer@email.com</p>
-          </div>
-        </div>
-      </div>
+      
 
       {/* Scrollable Cart Items */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto no-scrollbar">
         {cart.length === 0 ? (
           <div className="p-4 text-center text-gray-400 h-full flex flex-col items-center justify-center">
             <ShoppingCart size={48} className="mx-auto mb-4 opacity-50" />

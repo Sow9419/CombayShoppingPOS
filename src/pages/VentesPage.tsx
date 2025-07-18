@@ -167,7 +167,7 @@ const VentesPage: React.FC = () => {
       <div className="md:hidden flex flex-col h-full">
         {/* Mobile Header avec filtres de statut horizontaux */}
         <div className="flex-shrink-0 p-4 border-b border-gray-800">
-          <div className="flex space-x-2 overflow-x-auto pb-2 mb-4">
+          <div className="flex space-x-2 overflow-x-auto pb-2 mb-4 no-scrollbar">
             {[
               { id: 'all', label: 'Tous', count: statusCounts.all },
               { id: 'paid', label: 'Payé', count: statusCounts.paid },
@@ -209,7 +209,7 @@ const VentesPage: React.FC = () => {
         </div>
 
         {/* Mobile Content - Scrollable */}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-4 no-scrollbar">
           <SalesList
             sales={filteredSales}
             onSaleClick={handleSaleClick}
@@ -245,7 +245,7 @@ const VentesPage: React.FC = () => {
           </div>
 
           {/* Content - Scrollable */}
-          <div className="flex-1 overflow-y-auto p-6">
+          <div className="flex-1 overflow-y-auto p-6 no-scrollbar">
             <SalesList
               sales={filteredSales}
               onSaleClick={handleSaleClick}

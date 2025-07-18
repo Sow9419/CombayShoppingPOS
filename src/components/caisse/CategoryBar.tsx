@@ -16,7 +16,7 @@ const CategoryBar: React.FC<CategoryBarProps> = ({
   onAddCategory,
 }) => {
   return (
-    <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
+    <div className="flex items-center gap-3 overflow-x-auto pb-2 no-scrollbar">
       {/* Bouton Tous */}
       <button
         onClick={() => onCategorySelect(null)}

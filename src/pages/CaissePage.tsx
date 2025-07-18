@@ -119,7 +119,7 @@ const CaissePage: React.FC = () => {
           </div>
 
           {/* Scrollable Products Grid */}
-          <div className="flex-1 overflow-y-auto px-4 pb-4 hide-scrollbar">
+          <div className="flex-1 overflow-y-auto px-4 pb-4 no-scrollbar">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredProducts.map(product => (
                 <ProductCard
@@ -200,7 +200,7 @@ const CaissePage: React.FC = () => {
   // Cart Panel Component
   function CartPanel({ isMobile = false, onClose }: { isMobile?: boolean; onClose?: () => void }) {
     return (
-      <div className="h-full flex flex-col overflow-hidden bg-black">
+      <div className="h-full flex flex-col overflow-hidden bg-black no-scrollbar">
         {/* Fixed Header */}
         <div className="flex-shrink-0 p-4 border-b border-gray-800 md:bg-gray-900/50 bg-black">
           <div className="flex items-center justify-between">
@@ -230,7 +230,7 @@ const CaissePage: React.FC = () => {
         </div>
 
         {/* Scrollable Cart Items */}
-        <div className="flex-1 overflow-y-auto md:bg-gray-900/50 bg-black">
+        <div className="flex-1 overflow-y-auto md:bg-gray-900/50 bg-black no-scrollbar">
           {cart.length === 0 ? (
             <div className="p-4 text-center text-gray-400 h-full flex flex-col items-center justify-center">
               <ShoppingCart size={48} className="mx-auto mb-4 opacity-50" />
