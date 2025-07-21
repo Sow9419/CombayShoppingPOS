@@ -1,152 +1,131 @@
-import React, { useState } from 'react';
-import { Plus, Search, Edit, Mail, Phone, MapPin, User } from 'lucide-react';
-import Card from '../components/common/Card';
-import Button from '../components/common/Button';
-import { mockCustomers } from '../data/mockData';
 
+import React, { useState, useMemo } from 'react';
+import { Customer } from '../types';
+import { mockCustomers, mockSuppliers } from '../data/mockData';
+import {
+  ContactList,
+  ContactFormModal,
+  ClientDetailModal,
+} from '../components/contacts';
+import ContactFilterSidebar from '../components/contacts/ContactFilterSidebar';
+import SearchBar from '../components/contacts/SearchBar';
+import MobileContactFilters from '../components/contacts/MobileContactFilters';
+
+/**
+ * Page de gestion des contacts (clients et fournisseurs) avec une nouvelle disposition.
+ */
 const ContactsPage: React.FC = () => {
+  // --- ÉTATS LOCAUX ---
+  const [activeContactType, setActiveContactType] = useState<'clients' | 'suppliers'>('clients');
   const [searchTerm, setSearchTerm] = useState('');
-  const [contactType, setContactType] = useState<'all' | 'customers' | 'suppliers'>('all');
+  const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
+  const [selectedContact, setSelectedContact] = useState<Customer | null>(null);
 
-  const filteredContacts = mockCustomers.filter(contact =>
-    contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    contact.phone?.includes(searchTerm)
-  );
+  // --- DONNÉES FILTRÉES ---
+  const currentContacts = useMemo(() =>
+    activeContactType === 'clients' ? mockCustomers : mockSuppliers
+  , [activeContactType]);
 
-  const totalCustomers = mockCustomers.length;
-  const totalPurchases = mockCustomers.reduce((sum, c) => sum + c.totalPurchases, 0);
-  const avgPurchase = totalPurchases / totalCustomers;
+  const filteredContacts = useMemo(() => {
+    if (!searchTerm) return currentContacts;
+    return currentContacts.filter(contact =>
+      contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      contact.phone?.includes(searchTerm) ||
+      contact.phone?.includes(searchTerm)
+    );
+  }, [currentContacts, searchTerm]);
 
+  // --- GESTIONNAIRES D'ÉVÉNEMENTS ---
+  const handleOpenFormModal = (mode: 'create' | 'edit', contact: Customer | null = null) => {
+    setModalMode(mode);
+    setSelectedContact(contact);
+    setIsFormModalOpen(true);
+  };
+
+  const handleOpenDetailModal = (contact: Customer) => {
+    setSelectedContact(contact);
+    setIsDetailModalOpen(true);
+  };
+
+  const handleCloseModals = () => {
+    setIsFormModalOpen(false);
+    setIsDetailModalOpen(false);
+  };
+
+  const handleSaveContact = (contactData: Partial<Customer>) => {
+    console.log('Sauvegarde du contact:', contactData);
+    // Logique de sauvegarde...
+    handleCloseModals();
+  };
+
+  // --- RENDU DU COMPOSANT ---
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-        <h1 className="text-2xl md:text-3xl font-bold text-white">Gestion des Contacts</h1>
-        <Button className="mt-4 md:mt-0 flex items-center space-x-2">
-          <Plus size={20} />
-          <span>Ajouter un contact</span>
-        </Button>
-      </div>
+    <div className="flex h-screen bg-black text-white">
+      {/* Section gauche (Filtres) - Fond noir */}
+      <aside className="hidden md:block md:w-72 lg:w-80 p-6 bg-black border-r border-gray-800">
+        <ContactFilterSidebar
+          activeType={activeContactType}
+          onTypeChange={setActiveContactType}
+          onAddContact={() => handleOpenFormModal('create')}
+        />
+      </aside>
 
-      {/* Statistiques */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-sm">Total Clients</p>
-              <p className="text-2xl font-bold text-white">{totalCustomers}</p>
-            </div>
-            <User className="text-blue-400" size={32} />
+      {/* Section droite (Contenu principal) - Fond gris foncé */}
+      <main className="flex-1 flex flex-col overflow-hidden bg-gray-900/50">
+        {/* En-tête de la section principale */}
+        <header className="sticky top-0 bg-gray-900/80 backdrop-blur-sm z-10 border-b border-gray-800 px-4 sm:px-6 lg:px-8">
+          <div className="pt-6 pb-4">
+            <h1 className="text-2xl font-bold text-white">Gestion des Contacts</h1>
+            <p className="text-sm text-gray-400">
+              Gérez vos clients et fournisseurs en un seul endroit.
+            </p>
           </div>
-        </Card>
-        
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-sm">CA Total Clients</p>
-              <p className="text-2xl font-bold text-green-400">{totalPurchases.toFixed(2)}€</p>
-            </div>
-            <User className="text-green-400" size={32} />
+          <div className="pb-4">
+            <SearchBar
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+            />
           </div>
-        </Card>
-        
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-sm">Panier Moyen</p>
-              <p className="text-2xl font-bold text-yellow-400">{avgPurchase.toFixed(2)}€</p>
-            </div>
-            <User className="text-yellow-400" size={32} />
-          </div>
-        </Card>
-      </div>
+          {/* Filtres pour mobile - intégrés ici */}
+          <MobileContactFilters 
+            activeType={activeContactType}
+            onTypeChange={setActiveContactType}
+            onAddContact={() => handleOpenFormModal('create')}
+          />
+        </header>
 
-      {/* Filtres et recherche */}
-      <Card>
-        <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <input
-                type="text"
-                placeholder="Rechercher par nom, email ou téléphone..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-          
-          <select
-            value={contactType}
-            onChange={(e) => setContactType(e.target.value as any)}
-            className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="all">Tous les contacts</option>
-            <option value="customers">Clients</option>
-            <option value="suppliers">Fournisseurs</option>
-          </select>
+        {/* Contenu scrollable */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+          <ContactList
+            contacts={filteredContacts}
+            onContactClick={handleOpenDetailModal}
+            contactType={activeContactType}
+          />
         </div>
-      </Card>
+      </main>
 
-      {/* Liste des contacts */}
-      <Card>
-        <h2 className="text-xl font-semibold text-white mb-4">Liste des Contacts</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filteredContacts.map(contact => (
-            <div key={contact.id} className="p-4 bg-gray-700 rounded-lg">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex-1">
-                  <h3 className="font-medium text-white text-lg">{contact.name}</h3>
-                  <p className="text-green-400 font-bold">
-                    Total achats: {contact.totalPurchases.toFixed(2)}€
-                  </p>
-                </div>
-                <Button size="sm" variant="secondary">
-                  <Edit size={16} />
-                </Button>
-              </div>
-              
-              <div className="space-y-2">
-                {contact.email && (
-                  <div className="flex items-center text-gray-300">
-                    <Mail size={16} className="mr-2 text-gray-400" />
-                    <span className="text-sm">{contact.email}</span>
-                  </div>
-                )}
-                
-                {contact.phone && (
-                  <div className="flex items-center text-gray-300">
-                    <Phone size={16} className="mr-2 text-gray-400" />
-                    <span className="text-sm">{contact.phone}</span>
-                  </div>
-                )}
-                
-                {contact.address && (
-                  <div className="flex items-start text-gray-300">
-                    <MapPin size={16} className="mr-2 text-gray-400 mt-0.5" />
-                    <span className="text-sm">{contact.address}</span>
-                  </div>
-                )}
-              </div>
-              
-              <div className="mt-4 pt-4 border-t border-gray-600">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Client depuis:</span>
-                  <span className="text-white">Janvier 2024</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        {filteredContacts.length === 0 && (
-          <div className="text-center py-8">
-            <User className="text-gray-400 mx-auto mb-2" size={48} />
-            <p className="text-gray-400">Aucun contact trouvé</p>
-          </div>
-        )}
-      </Card>
+      {/* Modales */}
+      <ContactFormModal
+        isOpen={isFormModalOpen}
+        onClose={handleCloseModals}
+        onSave={handleSaveContact}
+        contact={selectedContact}
+        contactType={activeContactType}
+        mode={modalMode}
+      />
+
+      <ClientDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={handleCloseModals}
+        contact={selectedContact}
+        onEdit={(contact) => {
+          setIsDetailModalOpen(false);
+          handleOpenFormModal('edit', contact);
+        }}
+        contactType={activeContactType}
+      />
     </div>
   );
 };
