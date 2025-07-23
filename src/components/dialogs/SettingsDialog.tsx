@@ -3,6 +3,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { X, Sun, Moon, Monitor, Palette, Settings, Bell, LogOut } from 'lucide-react';
 import { useSettings, Currency, Language } from '../../contexts/SettingsContext';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from 'next-themes';
 
 interface SettingsDialogProps {
   open: boolean;
@@ -12,6 +13,7 @@ interface SettingsDialogProps {
 const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onOpenChange }) => {
   const { settings, setSettings } = useSettings();
   const { user, signOut } = useAuth();
+  const { theme, setTheme } = useTheme();
 
   const handleSignOut = async () => {
     await signOut();
@@ -53,9 +55,9 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onOpenChange }) =
             <SettingsSection icon={<Palette size={20} />} title="Apparence">
               <p className="text-sm font-medium mb-3 text-gray-300">Thème</p>
               <div className="grid grid-cols-3 gap-3">
-                <ThemeButton icon={<Sun size={20} />} label="Clair" active={settings.theme === 'light'} onClick={() => setSettings(p => ({ ...p, theme: 'light' }))} />
-                <ThemeButton icon={<Moon size={20} />} label="Sombre" active={settings.theme === 'dark'} onClick={() => setSettings(p => ({ ...p, theme: 'dark' }))} />
-                <ThemeButton icon={<Monitor size={20} />} label="Système" active={settings.theme === 'system'} onClick={() => setSettings(p => ({ ...p, theme: 'system' }))} />
+                <ThemeButton icon={<Sun size={20} />} label="Clair" active={theme === 'light'} onClick={() => setTheme('light')} />
+                <ThemeButton icon={<Moon size={20} />} label="Sombre" active={theme === 'dark'} onClick={() => setTheme('dark')} />
+                <ThemeButton icon={<Monitor size={20} />} label="Système" active={theme === 'system'} onClick={() => setTheme('system')} />
               </div>
             </SettingsSection>
 

@@ -1,11 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-export type Theme = 'light' | 'dark' | 'system';
 export type Currency = 'FCFA' | 'USD' | 'EUR';
 export type Language = 'fr' | 'en';
 
 interface Settings {
-  theme: Theme;
   currency: Currency;
   language: Language;
   notifications: boolean;
@@ -19,7 +17,6 @@ interface SettingsContextType {
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
 const defaultSettings: Settings = {
-  theme: 'system',
   currency: 'FCFA',
   language: 'fr',
   notifications: true,
@@ -39,15 +36,6 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }
   useEffect(() => {
     try {
       localStorage.setItem('app-settings', JSON.stringify(settings));
-      
-      // Gérer le thème
-      if (settings.theme === 'system') {
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.classList.toggle('dark', systemPrefersDark);
-      } else {
-        document.documentElement.classList.toggle('dark', settings.theme === 'dark');
-      }
-
     } catch (error) {
       console.error('Failed to save settings to localStorage', error);
     }
