@@ -1,72 +1,149 @@
-import { Product, Customer, Sale } from '../types';
+import { Product, Customer, Sale, Category } from '../types';
+
+export const mockCategories: Category[] = [
+  { id: '1', name: 'Vêtement', color: 'bg-blue-500' },
+  { id: '2', name: 'Chaussure', color: 'bg-green-500' },
+  { id: '3', name: 'Montre', color: 'bg-purple-500' },
+  { id: '4', name: 'Casquette', color: 'bg-orange-500' },
+];
 
 export const mockProducts: Product[] = [
   {
     id: '1',
-    name: 'iPhone 14 Pro',
-    price: 1199.99,
+    name: 'Fleece Joggers',
+    price: 79.99,
     stock: 15,
-    category: 'Électronique',
-    barcode: '123456789012'
+    category: 'Vêtement',
+    categoryId: '1',
+    sku: 'CH-885',
+    image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400',
+    variant: 'Variant'
   },
   {
     id: '2',
-    name: 'MacBook Air M2',
-    price: 1299.99,
+    name: 'Fleece Joggers',
+    price: 79.99,
     stock: 8,
-    category: 'Informatique',
-    barcode: '123456789013'
+    category: 'Vêtement',
+    categoryId: '1',
+    sku: 'CH-885',
+    image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400',
+    variant: 'Variant'
   },
   {
     id: '3',
-    name: 'AirPods Pro',
-    price: 249.99,
+    name: 'Fleece Joggers',
+    price: 79.99,
     stock: 25,
-    category: 'Audio',
-    barcode: '123456789014'
+    category: 'Chaussure',
+    categoryId: '2',
+    sku: 'CH-885',
+    variant: 'Variant'
   },
   {
     id: '4',
-    name: 'iPad Pro 11"',
-    price: 899.99,
+    name: 'Fleece Joggers',
+    price: 79.99,
     stock: 12,
-    category: 'Tablette',
-    barcode: '123456789015'
+    category: 'Chaussure',
+    categoryId: '2',
+    sku: 'CH-885',
+    image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400',
+    variant: 'Variant'
   },
   {
     id: '5',
-    name: 'Apple Watch Series 8',
-    price: 399.99,
+    name: 'Fleece Joggers',
+    price: 79.99,
     stock: 20,
     category: 'Montre',
-    barcode: '123456789016'
+    categoryId: '3',
+    sku: 'CH-885',
+    variant: 'Variant'
+  },
+  {
+    id: '6',
+    name: 'Fleece Joggers',
+    price: 79.99,
+    stock: 18,
+    category: 'Casquette',
+    categoryId: '4',
+    sku: 'CH-885',
+    image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400',
+    variant: 'Variant'
   }
 ];
 
 export const mockCustomers: Customer[] = [
   {
     id: '1',
-    name: 'Jean Dupont',
-    email: 'jean.dupont@email.com',
+    name: 'Dramane Sow',
     phone: '+33 1 23 45 67 89',
-    address: '123 Rue de la Paix, Paris',
     totalPurchases: 2499.98
   },
   {
     id: '2',
     name: 'Marie Martin',
-    email: 'marie.martin@email.com',
     phone: '+33 1 23 45 67 90',
-    address: '456 Avenue des Champs, Lyon',
     totalPurchases: 1899.99
   },
   {
     id: '3',
     name: 'Pierre Bernard',
-    email: 'pierre.bernard@email.com',
     phone: '+33 1 23 45 67 91',
-    address: '789 Boulevard Saint-Germain, Marseille',
     totalPurchases: 3199.97
+  },
+  {
+    id: '4',
+    name: 'Sophie Dubois',
+    phone: '+33 1 23 45 67 92',
+    totalPurchases: 1599.50
+  },
+  {
+    id: '5',
+    name: 'Ahmed Benali',
+    phone: '+33 1 23 45 67 93',
+    totalPurchases: 2850.75
+  },
+  {
+    id: '6',
+    name: 'Isabelle Moreau',
+    phone: '+33 1 23 45 67 94',
+    totalPurchases: 4200.25
+  }
+];
+
+// Données des fournisseurs
+export const mockSuppliers: Customer[] = [
+  {
+    id: 's1',
+    name: 'Textile France SARL',
+    phone: '+33 1 45 67 89 01',
+    totalPurchases: 45000.00
+  },
+  {
+    id: 's2',
+    name: 'Mode & Style Distribution',
+    phone: '+33 1 45 67 89 02',
+    totalPurchases: 32500.50
+  },
+  {
+    id: 's3',
+    name: 'Chaussures Premium',
+    phone: '+33 1 45 67 89 03',
+    totalPurchases: 28750.75
+  },
+  {
+    id: 's4',
+    name: 'Accessoires & Co',
+    phone: '+33 1 45 67 89 04',
+    totalPurchases: 19800.25
+  },
+  {
+    id: 's5',
+    name: 'Horlogerie Moderne',
+    phone: '+33 1 45 67 89 05',
+    totalPurchases: 52300.00
   }
 ];
 

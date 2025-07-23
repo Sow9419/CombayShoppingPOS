@@ -1,153 +1,225 @@
-import React, { useState } from 'react';
-import { Plus, Search, Edit, Package, AlertTriangle } from 'lucide-react';
-import Card from '../components/common/Card';
+import React, { useState, useMemo } from 'react';
+import { mockProducts, mockCategories } from '../data/mockData';
+import { Product } from '../types';
+import { KpiGrid, ProductList, LowStockAlert, ProductFormModal, SortFilter, TagFilter } from '../components/produit';
 import Button from '../components/common/Button';
-import { mockProducts } from '../data/mockData';
+import Collapsible from '../components/common/Collapsible';
+import { Search, Plus, Filter, X } from 'lucide-react';
 
+// Seuil pour le stock faible
+const LOW_STOCK_THRESHOLD = 10;
+
+/**
+ * Page principale pour la gestion des produits et du stock.
+ * Affiche les indicateurs de performance (KPIs), les alertes de stock faible,
+ * et la liste complète des produits avec des options de recherche, de tri et de filtrage.
+ */
 const ProduitsPage: React.FC = () => {
+  // --- ÉTATS LOCAUX ---
   const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [sortOption, setSortOption] = useState('created_desc');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
-  const categories = ['all', ...new Set(mockProducts.map(p => p.category))];
-  
-  const filteredProducts = mockProducts.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.barcode?.includes(searchTerm);
-    const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter;
-    return matchesSearch && matchesCategory;
-  });
+  // --- DONNÉES ET FILTRAGE ---
 
-  const lowStockProducts = mockProducts.filter(p => p.stock < 10);
-  const totalProducts = mockProducts.length;
-  const totalValue = mockProducts.reduce((sum, p) => sum + (p.price * p.stock), 0);
+  // Fonction de tri générique pour les produits
+  const sortProducts = (products: Product[], sortBy: string): Product[] => {
+    const sorted = [...products];
+    switch (sortBy) {
+      case 'created_desc': return sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      case 'created_asc': return sorted.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+      case 'name_asc': return sorted.sort((a, b) => a.name.localeCompare(b.name));
+      case 'name_desc': return sorted.sort((a, b) => b.name.localeCompare(a.name));
+      case 'stock_desc': return sorted.sort((a, b) => (b.stock ?? 0) - (a.stock ?? 0));
+      case 'stock_asc': return sorted.sort((a, b) => (a.stock ?? 0) - (b.stock ?? 0));
+      case 'price_desc': return sorted.sort((a, b) => b.price - a.price);
+      case 'price_asc': return sorted.sort((a, b) => a.price - b.price);
+      default: return sorted;
+    }
+  };
 
+  // Mémoïsation des produits filtrés et triés pour optimiser les performances
+  const filteredAndSortedProducts = useMemo(() => {
+    const filtered = mockProducts.filter(product => {
+      const matchesSearch = searchTerm === '' ||
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.sku?.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesCategory = selectedCategories.length === 0 ||
+        selectedCategories.includes(product.categoryId);
+
+      return matchesSearch && matchesCategory;
+    });
+
+    return sortProducts(filtered, sortOption);
+  }, [searchTerm, selectedCategories, sortOption]);
+
+  // Produits avec un stock faible
+  const lowStockProducts = useMemo(() => 
+    filteredAndSortedProducts.filter(p => p.stock !== undefined && p.stock < LOW_STOCK_THRESHOLD)
+  , [filteredAndSortedProducts]);
+
+  // --- GESTIONNAIRES D'ÉVÉNEMENTS ---
+
+  const handleOpenModal = (mode: 'create' | 'edit', product: Product | null = null) => {
+    setModalMode(mode);
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const handleSaveProduct = (productData: Partial<Product>) => {
+    console.log('Saving product:', productData);
+    // Ici, vous intégreriez la logique pour appeler votre API (création ou mise à jour)
+    // Pour la démo, nous ne faisons qu'afficher les données.
+    handleCloseModal();
+  };
+
+  const handleDeleteProduct = (product: Product) => {
+    console.log('Deleting product:', product.id);
+    // Logique de suppression via API
+  };
+
+  // --- RENDU DU COMPOSANT ---
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-        <h1 className="text-2xl md:text-3xl font-bold text-white">Gestion des Produits</h1>
-        <Button className="mt-4 md:mt-0 flex items-center space-x-2">
-          <Plus size={20} />
-          <span>Ajouter un produit</span>
-        </Button>
-      </div>
+    <div className="bg-gray-950 text-white min-h-screen flex flex-col md:flex-row">
+      {/* Colonne de gauche (Filtres) - Fixe sur Desktop */}
+      <aside className="hidden md:block w-full md:w-72 lg:w-80 bg-black p-4 md:p-6 flex-shrink-0 md:h-screen md:sticky md:top-0">
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-white">Produits</h1>
+            <p className="text-gray-400 text-sm">Gérez votre inventaire</p>
+          </div>
+          
+          <Button 
+            onClick={() => handleOpenModal('create')}
+            className="w-full flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700"
+          >
+            <Plus size={20} />
+            <span>Ajouter un produit</span>
+          </Button>
 
-      {/* Statistiques */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-sm">Total Produits</p>
-              <p className="text-2xl font-bold text-white">{totalProducts}</p>
-            </div>
-            <Package className="text-blue-400" size={32} />
-          </div>
-        </Card>
-        
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-sm">Valeur du Stock</p>
-              <p className="text-2xl font-bold text-green-400">{totalValue.toFixed(2)}€</p>
-            </div>
-            <Package className="text-green-400" size={32} />
-          </div>
-        </Card>
-        
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-sm">Stock Faible</p>
-              <p className="text-2xl font-bold text-red-400">{lowStockProducts.length}</p>
-            </div>
-            <AlertTriangle className="text-red-400" size={32} />
-          </div>
-        </Card>
-      </div>
+          <div className="space-y-4">
+            <Collapsible title="Filtres">
+              <div className="space-y-4 pt-4">
+                {/* Barre de recherche */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                  <input
+                    type="text"
+                    placeholder="Rechercher..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
 
-      {/* Alertes stock faible */}
-      {lowStockProducts.length > 0 && (
-        <Card>
-          <div className="flex items-center space-x-3 mb-4">
-            <AlertTriangle className="text-red-400" size={24} />
-            <h2 className="text-xl font-semibold text-white">Alertes Stock Faible</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {lowStockProducts.map(product => (
-              <div key={product.id} className="p-4 bg-red-900/20 border border-red-700 rounded-lg">
-                <h3 className="font-medium text-white">{product.name}</h3>
-                <p className="text-sm text-gray-400 mt-1">{product.category}</p>
-                <p className="text-red-400 font-bold mt-2">Stock: {product.stock}</p>
+                <SortFilter 
+                  value={sortOption}
+                  onChange={setSortOption}
+                />
+                <TagFilter 
+                  selectedCategories={selectedCategories}
+                  onCategoriesChange={setSelectedCategories}
+                />
               </div>
-            ))}
+            </Collapsible>
           </div>
-        </Card>
-      )}
+        </div>
+      </aside>
 
-      {/* Filtres et recherche */}
-      <Card>
-        <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
-          <div className="flex-1">
+      {/* Colonne de droite (Contenu) - Scrollable */}
+      <div className="flex-1 flex flex-col">
+        {/* Header Mobile */}
+        <header className="md:hidden bg-black p-4 sticky top-0 z-10 border-b border-gray-800">
+          <div className="flex items-center justify-between">
+            <h1 className="text-xl font-bold text-white">Produits</h1>
+            <div className="flex items-center space-x-2">
+              <Button 
+                onClick={() => handleOpenModal('create')}
+                variant="primary"
+                size="sm"
+              >
+                <Plus size={18} />
+              </Button>
+              <Button 
+                onClick={() => setIsFilterModalOpen(true)}
+                variant="secondary"
+                size="sm"
+              >
+                <Filter size={18} />
+              </Button>
+            </div>
+          </div>
+          <div className="mt-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="text"
-                placeholder="Rechercher par nom ou code-barres..."
+                placeholder="Rechercher..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
-          
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            {categories.map(category => (
-              <option key={category} value={category}>
-                {category === 'all' ? 'Toutes les catégories' : category}
-              </option>
-            ))}
-          </select>
-        </div>
-      </Card>
+        </header>
 
-      {/* Liste des produits */}
-      <Card>
-        <h2 className="text-xl font-semibold text-white mb-4">Inventaire</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredProducts.map(product => (
-            <div key={product.id} className="p-4 bg-gray-700 rounded-lg">
-              <div className="flex justify-between items-start mb-3">
-                <div className="flex-1">
-                  <h3 className="font-medium text-white">{product.name}</h3>
-                  <p className="text-sm text-gray-400 mt-1">{product.category}</p>
-                  {product.barcode && (
-                    <p className="text-xs text-gray-500 mt-1">Code: {product.barcode}</p>
-                  )}
-                </div>
-                <Button size="sm" variant="secondary" className="ml-2">
-                  <Edit size={16} />
-                </Button>
-              </div>
-              
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-lg font-bold text-green-400">{product.price.toFixed(2)}€</p>
-                  <p className={`text-sm ${product.stock < 10 ? 'text-red-400' : 'text-gray-400'}`}>
-                    Stock: {product.stock}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-400">Valeur</p>
-                  <p className="font-medium text-white">{(product.price * product.stock).toFixed(2)}€</p>
-                </div>
-              </div>
+        <main className="flex-1 p-4 md:p-6 overflow-y-auto">
+          <div className="space-y-6">
+            <KpiGrid products={filteredAndSortedProducts} />
+            <LowStockAlert products={lowStockProducts} />
+            <ProductList
+              products={filteredAndSortedProducts}
+              onEditProduct={(product) => handleOpenModal('edit', product)}
+              onDeleteProduct={handleDeleteProduct}
+            />
+          </div>
+        </main>
+      </div>
+
+      {/* Modale pour la création et l'édition de produits */}
+      <ProductFormModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSave={handleSaveProduct}
+        product={selectedProduct}
+        mode={modalMode}
+        categories={mockCategories}
+      />
+
+      {/* Modale de Filtres Mobile */}
+      {isFilterModalOpen && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-end md:hidden">
+          <div className="bg-gray-900 w-full rounded-t-2xl p-4 shadow-lg">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Filtres</h2>
+              <button onClick={() => setIsFilterModalOpen(false)} className="text-gray-400 hover:text-white">
+                <X size={24} />
+              </button>
             </div>
-          ))}
+            <div className="space-y-6">
+              <SortFilter 
+                value={sortOption}
+                onChange={setSortOption}
+              />
+              <TagFilter 
+                selectedCategories={selectedCategories}
+                onCategoriesChange={setSelectedCategories}
+              />
+              <Button onClick={() => setIsFilterModalOpen(false)} className="w-full">Appliquer</Button>
+            </div>
+          </div>
         </div>
-      </Card>
+      )}
     </div>
   );
 };

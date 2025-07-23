@@ -1,19 +1,32 @@
 import React, { useState } from 'react';
-import { Plus, Minus, Trash2, CreditCard, Banknote, Clock } from 'lucide-react';
-import Card from '../components/common/Card';
-import Button from '../components/common/Button';
-import { Product, CartItem } from '../types';
-import { mockProducts } from '../data/mockData';
+import { Search, Plus, ShoppingCart, BarChart3 } from 'lucide-react';
+import { Product, CartItem, Category } from '../types';
+import { mockProducts, mockCategories } from '../data/mockData';
+import CategoryBar from '../components/caisse/CategoryBar';
+import ProductCard from '../components/caisse/ProductCard';
+import AddCategoryModal from '../components/caisse/AddCategoryModal';
+import CartPanel from '../components/caisse/CartPanel';
+import { ProductFormModal } from '../components/produit';
 
 const CaissePage: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [products, setProducts] = useState<Product[]>(mockProducts);
+  const [categories, setCategories] = useState<Category[]>(mockCategories);
+  const [showAddProduct, setShowAddProduct] = useState(false);
+  const [showAddCategory, setShowAddCategory] = useState(false);
+  const [showCart, setShowCart] = useState(false);
 
-  const filteredProducts = mockProducts.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.barcode?.includes(searchTerm)
-  );
+  // Filtrage des produits
+  const filteredProducts = products.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         product.sku?.includes(searchTerm);
+    const matchesCategory = selectedCategory === null || product.categoryId === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
+  // Gestion du panier
   const addToCart = (product: Product) => {
     const existingItem = cart.find(item => item.id === product.id);
     
@@ -47,151 +60,160 @@ const CaissePage: React.FC = () => {
     setCart(cart.filter(item => item.id !== id));
   };
 
-  const subtotal = cart.reduce((sum, item) => sum + item.total, 0);
-  const tax = subtotal * 0.2;
-  const total = subtotal + tax;
-
   const handlePayment = (method: 'cash' | 'card' | 'partial') => {
-    if (cart.length === 0) return;
-    
-    // Simuler le traitement du paiement
-    alert(`Paiement ${method === 'cash' ? 'espèces' : method === 'card' ? 'carte' : 'partiel'} de ${total.toFixed(2)}€ traité avec succès!`);
+    // Logique de paiement à implémenter
+    console.log(`Paiement par ${method}`);
+    // Vider le panier après paiement
     setCart([]);
   };
 
+  // Ajout de produit
+  const handleAddProduct = (productData: any) => {
+    const category = categories.find(c => c.id === productData.categoryId);
+    const newProduct: Product = {
+      id: Date.now().toString(),
+      ...productData,
+      category: category?.name || 'Autre'
+    };
+    setProducts([...products, newProduct]);
+  };
+
+  // Ajout de catégorie
+  const handleAddCategory = (categoryData: { name: string; color: string }) => {
+    const newCategory: Category = {
+      id: Date.now().toString(),
+      ...categoryData
+    };
+    setCategories([...categories, newCategory]);
+  };
+
+  // Calculs du panier
+  const subtotal = cart.reduce((sum, item) => sum + item.total, 0);
+  const discount = 0;
+  const taxes = subtotal * 0.2;
+  const total = subtotal - discount + taxes;
+
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-        <h1 className="text-2xl md:text-3xl font-bold text-white">Caisse Enregistreuse</h1>
-        <div className="mt-4 md:mt-0">
-          <input
-            type="text"
-            placeholder="Rechercher un produit ou scanner un code..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full md:w-80 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    <div className="h-screen bg-black text-white flex flex-col ">
+      {/* Main Content */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left Panel - Products */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Fixed Header Section */}
+          <div className="flex-shrink-0 bg-black">
+            {/* Search Bar */}
+            <div className="p-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            {/* Category Bar */}
+            <div className="px-4 pb-4">
+              <CategoryBar
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onCategorySelect={setSelectedCategory}
+                onAddCategory={() => setShowAddCategory(true)}
+              />
+            </div>
+          </div>
+
+          {/* Scrollable Products Grid */}
+          <div className="flex-1 overflow-y-auto px-4 pb-4 no-scrollbar">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {filteredProducts.map(product => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onClick={addToCart}
+                />
+              ))}
+              
+              {/* Add Product Card */}
+              <div
+                onClick={() => setShowAddProduct(true)}
+                className="bg-gray-900 rounded-2xl p-4 h-32 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-800 transition-colors border-2 border-dashed border-gray-700"
+              >
+                <Plus size={24} className="text-gray-400 mb-2" />
+                <span className="text-gray-400 text-sm text-center">Ajouter un produit</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Bottom Actions - Fixed */}
+          <div className="md:hidden flex-shrink-0 p-4 border-t border-gray-800 bg-black">
+            <div className="grid grid-cols-2 gap-4 mb-4 ">
+              <button className="bg-gray-900 rounded-xl p-4 flex flex-col items-center">
+                <BarChart3 size={24} className="text-blue-500 mb-2" />
+                <span className="text-sm">Nouvelle vente</span>
+              </button>
+              <button
+                onClick={() => setShowAddProduct(true)}
+                className="bg-gray-900 rounded-xl p-4 flex flex-col items-center"
+              >
+                <Plus size={24} className="text-green-500 mb-2" />
+                <span className="text-sm">Ajouter un produit</span>
+              </button>
+            </div>
+            
+            {cart.length > 0 && (
+              <button
+                onClick={() => setShowCart(true)}
+                className="w-full bg-blue-600 rounded-xl py-4 flex items-center justify-center space-x-2"
+              >
+                <ShoppingCart size={20} />
+                <span>Panier : {cart.length} Articles - Total : {total.toFixed(2)}€</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Right Panel - Cart (Desktop only) */}
+        <div className="hidden md:block w-96 bg-gray-900 border-l border-gray-800 flex-shrink-0">
+          <CartPanel
+            cart={cart}
+            onUpdateQuantity={updateQuantity}
+            onRemoveFromCart={removeFromCart}
+            onPayment={handlePayment}
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Products Grid */}
-        <div className="lg:col-span-2">
-          <Card>
-            <h2 className="text-xl font-semibold text-white mb-4">Produits</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {filteredProducts.map(product => (
-                <div
-                  key={product.id}
-                  onClick={() => addToCart(product)}
-                  className="p-4 bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors"
-                >
-                  <h3 className="font-medium text-white">{product.name}</h3>
-                  <p className="text-sm text-gray-400 mt-1">{product.category}</p>
-                  <div className="flex justify-between items-center mt-3">
-                    <span className="text-lg font-bold text-green-400">{product.price.toFixed(2)}€</span>
-                    <span className="text-sm text-gray-400">Stock: {product.stock}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
+      {/* Mobile Cart Modal */}
+      {showCart && (
+        <div className="md:hidden fixed inset-0 bg-black z-50 flex flex-col">
+          <CartPanel
+            cart={cart}
+            onUpdateQuantity={updateQuantity}
+            onRemoveFromCart={removeFromCart}
+            onPayment={handlePayment}
+            isMobile
+            onClose={() => setShowCart(false)}
+          />
         </div>
+      )}
 
-        {/* Cart */}
-        <div className="space-y-6">
-          <Card>
-            <h2 className="text-xl font-semibold text-white mb-4">Panier</h2>
-            {cart.length === 0 ? (
-              <p className="text-gray-400 text-center py-8">Aucun article dans le panier</p>
-            ) : (
-              <div className="space-y-3">
-                {cart.map(item => (
-                  <div key={item.id} className="p-3 bg-gray-700 rounded-lg">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-medium text-white text-sm">{item.product.name}</h4>
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="text-red-400 hover:text-red-300"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => updateQuantity(item.id, -1)}
-                          className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white hover:bg-gray-500"
-                        >
-                          <Minus size={14} />
-                        </button>
-                        <span className="text-white font-medium w-8 text-center">{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item.id, 1)}
-                          className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white hover:bg-gray-500"
-                        >
-                          <Plus size={14} />
-                        </button>
-                      </div>
-                      <span className="text-green-400 font-bold">{item.total.toFixed(2)}€</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </Card>
+      {/* Modals */}
+      <ProductFormModal
+        isOpen={showAddProduct}
+        onClose={() => setShowAddProduct(false)}
+        onSave={handleAddProduct}
+        mode="create"
+      />
 
-          {cart.length > 0 && (
-            <Card>
-              <h2 className="text-xl font-semibold text-white mb-4">Total</h2>
-              <div className="space-y-2">
-                <div className="flex justify-between text-gray-300">
-                  <span>Sous-total:</span>
-                  <span>{subtotal.toFixed(2)}€</span>
-                </div>
-                <div className="flex justify-between text-gray-300">
-                  <span>TVA (20%):</span>
-                  <span>{tax.toFixed(2)}€</span>
-                </div>
-                <div className="flex justify-between text-xl font-bold text-white border-t border-gray-600 pt-2">
-                  <span>Total:</span>
-                  <span>{total.toFixed(2)}€</span>
-                </div>
-              </div>
-
-              <div className="mt-6 space-y-3">
-                <Button
-                  onClick={() => handlePayment('cash')}
-                  variant="success"
-                  fullWidth
-                  className="flex items-center justify-center space-x-2"
-                >
-                  <Banknote size={20} />
-                  <span>Payer en Espèces</span>
-                </Button>
-                <Button
-                  onClick={() => handlePayment('card')}
-                  variant="primary"
-                  fullWidth
-                  className="flex items-center justify-center space-x-2"
-                >
-                  <CreditCard size={20} />
-                  <span>Payer par Carte</span>
-                </Button>
-                <Button
-                  onClick={() => handlePayment('partial')}
-                  variant="secondary"
-                  fullWidth
-                  className="flex items-center justify-center space-x-2"
-                >
-                  <Clock size={20} />
-                  <span>Paiement Partiel</span>
-                </Button>
-              </div>
-            </Card>
-          )}
-        </div>
-      </div>
+      <AddCategoryModal
+        isOpen={showAddCategory}
+        onClose={() => setShowAddCategory(false)}
+        onAddCategory={handleAddCategory}
+      />
     </div>
   );
 };

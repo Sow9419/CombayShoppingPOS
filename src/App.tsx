@@ -1,26 +1,25 @@
 import { useState } from 'react';
+import { SettingsProvider } from './contexts/SettingsContext';
+import Home from './pages/Home';
+import { useAuth } from './hooks/useAuth';
+import Button from './components/common/Button';
 import { HeroGeometric } from './components/ui/shape-landing-hero';
 import { LoginDialog } from './components/dialogs/LoginDialog';
 import { SignupDialog } from './components/dialogs/SignupDialog';
-import Button from './components/common/Button';
-import { useAuth } from './hooks/useAuth';
-import Home from './pages/Home';
 
-function App() {
+function AuthWrapper() {
+  const { user, loading } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
-  const { user, loading } = useAuth();
 
   const handleStartClick = () => {
     if (user) {
-      // L'utilisateur est déjà connecté, pas besoin d'action
       return;
     } else {
       setShowLogin(true);
     }
   };
 
-  // Afficher un loader pendant la vérification de l'authentification
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
@@ -32,12 +31,10 @@ function App() {
     );
   }
 
-  // Si l'utilisateur est connecté, afficher la page Home
   if (user) {
     return <Home />;
   }
 
-  // Sinon, afficher la page de connexion
   return (
     <div className="w-full">
       <div className="absolute top-8 right-4 z-20 flex gap-2">
@@ -81,6 +78,14 @@ function App() {
         }}
       />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <SettingsProvider>
+      <AuthWrapper />
+    </SettingsProvider>
   );
 }
 

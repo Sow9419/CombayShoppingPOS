@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import MobileHeader from './MobileHeader';
 import MobileTabBar from './MobileTabBar';
+import SettingsDialog from '../dialogs/SettingsDialog';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,23 +11,27 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, currentPath, onNavigate }) => {
+  const [showSettings, setShowSettings] = useState(false);
+
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-black">
       {/* Desktop Sidebar */}
-      <Sidebar currentPath={currentPath} onNavigate={onNavigate} />
+      <Sidebar currentPath={currentPath} onNavigate={onNavigate} onSettingsClick={() => setShowSettings(true)} />
       
       {/* Mobile Header */}
-      <MobileHeader />
+      <MobileHeader onProfileClick={() => setShowSettings(true)} />
       
       {/* Main Content */}
-      <main className="md:ml-16 pt-16 md:pt-0 pb-20 md:pb-0 min-h-screen">
-        <div className="p-4 md:p-6">
+      <main className="md:ml-16 pt-16 md:pt-0 pb-20 md:pb-0 min-h-screen bg-black">
+        <div className="p-0 md:p-0">
           {children}
         </div>
       </main>
       
       {/* Mobile Tab Bar */}
       <MobileTabBar currentPath={currentPath} onNavigate={onNavigate} />
+
+      <SettingsDialog open={showSettings} onOpenChange={setShowSettings} />
     </div>
   );
 };

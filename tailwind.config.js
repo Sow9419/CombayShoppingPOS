@@ -59,5 +59,19 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.no-scrollbar': {
+          /* pour Firefox et Edge */
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none',
+        },
+        '.no-scrollbar::-webkit-scrollbar': {
+          /* pour Chrome, Safari, Opera */
+          display: 'none',
+        },
+      });
+    },
+  ],
 };

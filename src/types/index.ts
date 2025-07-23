@@ -5,13 +5,23 @@ export interface NavigationItem {
 }
 
 export interface Product {
+  createdAt: string | number | Date;
   id: string;
   name: string;
   price: number;
   stock: number;
   category: string;
-  barcode?: string;
+  categoryId: string;
+  sku?: string;
   image?: string;
+  variant?: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  color?: string;
+  icon?: string;
 }
 
 export interface CartItem {
@@ -24,9 +34,8 @@ export interface CartItem {
 export interface Customer {
   id: string;
   name: string;
-  email?: string;
+  
   phone?: string;
-  address?: string;
   totalPurchases: number;
 }
 
