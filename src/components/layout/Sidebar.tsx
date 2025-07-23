@@ -6,9 +6,10 @@ import { useAuth } from '../../hooks/useAuth';
 interface SidebarProps {
   currentPath: string;
   onNavigate: (path: string) => void;
+  onSettingsClick: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => {
+const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate, onSettingsClick }) => {
   const { signOut } = useAuth();
 
   const navigationItems: NavigationItem[] = [
@@ -59,7 +60,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => {
 
       {/* User Section */}
       <div className="flex flex-col items-center py-4 space-y-4 ">
-        <button className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-400/70 hover:text-white hover:bg-gray-800 transition-all duration-200 bg-gray-900/60">
+        <button onClick={onSettingsClick} className="w-10 h-10 rounded-xl flex items-center justify-center text-gray-400/70 hover:text-white hover:bg-gray-800 transition-all duration-200 bg-gray-900/60">
           <User size={20} />
         </button>
         <button 

@@ -1,4 +1,4 @@
-export { default as ProductHeader } from './ProductHeader';
+
 export { default as SortFilter } from './SortFilter';
 export { default as TagFilter } from './TagFilter';
 export { default as KpiGrid } from './KpiGrid';

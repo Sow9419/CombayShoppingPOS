@@ -4,9 +4,9 @@ import { Product, CartItem, Category } from '../types';
 import { mockProducts, mockCategories } from '../data/mockData';
 import CategoryBar from '../components/caisse/CategoryBar';
 import ProductCard from '../components/caisse/ProductCard';
-import AddProductModal from '../components/caisse/AddProductModal';
 import AddCategoryModal from '../components/caisse/AddCategoryModal';
 import CartPanel from '../components/caisse/CartPanel';
+import { ProductFormModal } from '../components/produit';
 
 const CaissePage: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -202,11 +202,11 @@ const CaissePage: React.FC = () => {
       )}
 
       {/* Modals */}
-      <AddProductModal
+      <ProductFormModal
         isOpen={showAddProduct}
         onClose={() => setShowAddProduct(false)}
-        onAddProduct={handleAddProduct}
-        categories={categories}
+        onSave={handleAddProduct}
+        mode="create"
       />
 
       <AddCategoryModal

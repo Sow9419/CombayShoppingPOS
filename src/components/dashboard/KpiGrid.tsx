@@ -12,29 +12,26 @@ interface KpiCardProps {
 
 const KpiCard: React.FC<KpiCardProps> = ({ title, value, change, changeType, icon, iconColor }) => {
   return (
-    <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-      <div className="flex items-start justify-between mb-4">
-        <div className={`p-3 rounded-lg ${iconColor}`}>
+    <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+      <div className="flex items-start justify-between mb-3">
+        <div className={`p-2 rounded-lg ${iconColor}`}>
           {icon}
         </div>
-        <div className={`flex items-center space-x-1 text-sm ${
+        <div className={`flex items-center space-x-1 text-xs ${
           changeType === 'increase' ? 'text-green-400' : 'text-red-400'
         }`}>
           {changeType === 'increase' ? (
-            <TrendingUp size={16} />
+            <TrendingUp size={14} />
           ) : (
-            <TrendingDown size={16} />
+            <TrendingDown size={14} />
           )}
           <span>{change}</span>
         </div>
       </div>
       
       <div>
-        <h3 className="text-2xl md:text-3xl font-bold text-white mb-1">{value}</h3>
-        <p className="text-gray-400 text-sm">{title}</p>
-        <p className="text-gray-500 text-xs mt-1">
-          {changeType === 'increase' ? '+' : ''}{change} / Au mois dernier
-        </p>
+        <h3 className="text-xl md:text-2xl font-bold text-white mb-1">{value}</h3>
+        <p className="text-gray-400 text-xs">{title}</p>
       </div>
     </div>
   );
@@ -52,7 +49,7 @@ const KpiGrid: React.FC<KpiGridProps> = ({ period }) => {
       value: '764.000FCFA',
       change: '+10%',
       changeType: 'increase' as const,
-      icon: <DollarSign size={24} className="text-orange-400" />,
+      icon: <DollarSign size={20} className="text-orange-400" />,
       iconColor: 'bg-orange-500/20'
     },
     {
@@ -60,7 +57,7 @@ const KpiGrid: React.FC<KpiGridProps> = ({ period }) => {
       value: '400.000FCFA',
       change: '+5%',
       changeType: 'increase' as const,
-      icon: <CreditCard size={24} className="text-blue-400" />,
+      icon: <CreditCard size={20} className="text-blue-400" />,
       iconColor: 'bg-blue-500/20'
     },
     {
@@ -68,7 +65,7 @@ const KpiGrid: React.FC<KpiGridProps> = ({ period }) => {
       value: '9',
       change: '+2%',
       changeType: 'increase' as const,
-      icon: <ShoppingBag size={24} className="text-purple-400" />,
+      icon: <ShoppingBag size={20} className="text-purple-400" />,
       iconColor: 'bg-purple-500/20'
     },
     {
@@ -76,13 +73,13 @@ const KpiGrid: React.FC<KpiGridProps> = ({ period }) => {
       value: '12',
       change: '+3%',
       changeType: 'increase' as const,
-      icon: <Users size={24} className="text-cyan-400" />,
+      icon: <Users size={20} className="text-cyan-400" />,
       iconColor: 'bg-cyan-500/20'
     }
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4 md:gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
       {kpis.map((kpi, index) => (
         <KpiCard key={index} {...kpi} />
       ))}

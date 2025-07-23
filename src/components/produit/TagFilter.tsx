@@ -31,37 +31,44 @@ const TagFilter: React.FC<TagFilterProps> = ({ selectedCategories, onCategoriesC
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="w-full">
       {/* Bouton pour ouvrir le sélecteur de catégories */}
       <Button
         variant="secondary"
+        fullWidth
         onClick={() => setShowCategoryModal(true)}
-        className="flex items-center space-x-2 bg-gray-700 hover:bg-gray-600 border border-gray-600"
+        className="flex items-center justify-between w-full text-left bg-gray-700 hover:bg-gray-600 border border-gray-600"
       >
-        <Tag size={16} />
-        <span>Catégorie</span>
+        <div className="flex items-center space-x-2">
+          <Tag size={16} />
+          <span>Catégories</span>
+        </div>
         <Plus size={16} />
       </Button>
 
       {/* Tags des catégories sélectionnées */}
-      {getSelectedCategoryNames().map((categoryName, index) => {
-        const categoryId = selectedCategories[index];
-        const category = mockCategories.find(cat => cat.id === categoryId);
-        return (
-          <div
-            key={categoryId}
-            className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-medium text-white ${category?.color || 'bg-gray-600'}`}
-          >
-            <span>{categoryName}</span>
-            <button
-              onClick={() => removeCategory(categoryId)}
-              className="hover:bg-black/20 rounded-full p-1 transition-colors"
-            >
-              <X size={14} />
-            </button>
-          </div>
-        );
-      })}
+      {selectedCategories.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 mt-3">
+          {getSelectedCategoryNames().map((categoryName, index) => {
+            const categoryId = selectedCategories[index];
+            const category = mockCategories.find(cat => cat.id === categoryId);
+            return (
+              <div
+                key={categoryId}
+                className={`flex items-center space-x-2 px-2.5 py-1 rounded-full text-xs font-medium text-white ${category?.color || 'bg-gray-600'}`}
+              >
+                <span>{categoryName}</span>
+                <button
+                  onClick={() => removeCategory(categoryId)}
+                  className="hover:bg-black/20 rounded-full p-0.5 transition-colors"
+                >
+                  <X size={12} />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* Modale de sélection des catégories */}
       {showCategoryModal && (

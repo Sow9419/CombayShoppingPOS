@@ -45,7 +45,7 @@ const KpiGrid: React.FC<KpiGridProps> = ({ products }) => {
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 pb-4">
+    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-3 pb-4">
       {kpis.map((kpi, index) => {
         const IconComponent = kpi.icon;
         return (
@@ -53,7 +53,7 @@ const KpiGrid: React.FC<KpiGridProps> = ({ products }) => {
             <div className="flex items-center justify-between">
               <div className="flex-1">
                 <p className="text-gray-400 text-sm font-medium">{kpi.title}</p>
-                <p className="text-2xl md:text-3xl font-bold text-white mt-1">{kpi.value}</p>
+                <p className="text-2xl md:text-2xl font-bold text-white mt-1">{kpi.value}</p>
               </div>
               <div className={`p-3 rounded-lg ${kpi.bgColor}`}>
                 <IconComponent className={kpi.color} size={24} />
