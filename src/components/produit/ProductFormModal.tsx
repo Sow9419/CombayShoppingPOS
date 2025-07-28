@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { X, Save, Upload } from 'lucide-react';
 import { Product } from '../../types';
 import { mockCategories } from '../../data/mockData';
-import Button from '../common/Button';
 
 interface ProductFormModalProps {
   isOpen: boolean;
@@ -39,7 +38,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
         stock: product.stock,
         categoryId: product.categoryId,
         sku: product.sku || '',
-        image: product.image || '',
+        image: product.imageUrl || '',
         variant: product.variant || ''
       });
     } else {
@@ -110,15 +109,15 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-800 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto no-scrollbar">
         {/* En-tête */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
-          <h2 className="text-xl font-semibold text-white">
+        <div className="flex items-center justify-between p-4 border-b border-gray-400 dark:border-gray-700">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
             {mode === 'create' ? 'Ajouter un produit' : 'Modifier le produit'}
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-gray-700 dark:text-gray-400 hover:text-white transition-colors"
           >
             <X size={24} />
           </button>
@@ -128,11 +127,11 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Image du produit */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-900 dark:text-gray-300 mb-2">
               Image du produit
             </label>
             <div className="flex items-center space-x-4">
-              <div className="w-20 h-20 bg-gray-700 rounded-lg flex items-center justify-center overflow-hidden">
+              <div className="w-20 h-20 bg-gray-200 dark:bg-slate-700 rounded-lg flex items-center justify-center overflow-hidden">
                 {formData.image ? (
                   <img 
                     src={formData.image} 
@@ -140,7 +139,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <Upload className="text-gray-400" size={24} />
+                  <Upload className="text-gray-700 dark:text-gray-400" size={24} />
                 )}
               </div>
               <div className="flex-1">
@@ -149,7 +148,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   placeholder="URL de l'image"
                   value={formData.image}
                   onChange={(e) => handleInputChange('image', e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-400 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none"
                 />
               </div>
             </div>
@@ -157,15 +156,15 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
           {/* Nom du produit */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Nom du produit *
             </label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
-              className={`w-full px-3 py-2 bg-gray-700 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.name ? 'border-red-500' : 'border-gray-600'
+              className={`w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-400 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none ${
+                errors.name ? 'border-red-500' : 'border-gray-400 dark:border-gray-600'
               }`}
               placeholder="Entrez le nom du produit"
             />
@@ -176,14 +175,14 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
           {/* Catégorie */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Catégorie *
             </label>
             <select
               value={formData.categoryId}
               onChange={(e) => handleInputChange('categoryId', e.target.value)}
-              className={`w-full px-3 py-2 bg-gray-700 border rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.categoryId ? 'border-red-500' : 'border-gray-600'
+              className={`w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-400 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none ${
+                errors.categoryId ? 'border-red-500' : 'border-gray-400 dark:border-gray-600'
               }`}
             >
               <option value="">Sélectionner une catégorie</option>
@@ -201,8 +200,8 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
           {/* Prix et Stock */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Prix de vente (€) *
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Prix de vente (FCFA) *
               </label>
               <input
                 type="number"
@@ -210,8 +209,8 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 min="0"
                 value={formData.price}
                 onChange={(e) => handleInputChange('price', parseFloat(e.target.value) || 0)}
-                className={`w-full px-3 py-2 bg-gray-700 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.price ? 'border-red-500' : 'border-gray-600'
+                className={`w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-400 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none ${
+                  errors.price ? 'border-red-500' : 'border-gray-400 dark:border-gray-600'
                 }`}
                 placeholder="0.00"
               />
@@ -221,7 +220,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Stock *
               </label>
               <input
@@ -229,8 +228,8 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 min="0"
                 value={formData.stock}
                 onChange={(e) => handleInputChange('stock', parseInt(e.target.value) || 0)}
-                className={`w-full px-3 py-2 bg-gray-700 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.stock ? 'border-red-500' : 'border-gray-600'
+                className={`w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-400 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none ${
+                  errors.stock ? 'border-red-500' : 'border-gray-400 dark:border-gray-600'
                 }`}
                 placeholder="0"
               />
@@ -243,48 +242,47 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
           {/* SKU et Variante */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Code-barres / SKU
               </label>
               <input
                 type="text"
                 value={formData.sku}
                 onChange={(e) => handleInputChange('sku', e.target.value)}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-400 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none"
                 placeholder="Code produit"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Variante
               </label>
               <input
                 type="text"
                 value={formData.variant}
                 onChange={(e) => handleInputChange('variant', e.target.value)}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-400 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none"
                 placeholder="Taille, couleur, etc."
               />
             </div>
           </div>
 
           {/* Boutons d'action */}
-          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-700">
-            <Button
-              type="button"
-              variant="secondary"
+          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-300 dark:border-gray-700">
+            <button
+              className='bg-gray-600 py-1 px-3 rounded-md'
               onClick={onClose}
             >
               Annuler
-            </Button>
-            <Button
+            </button>
+            <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 flex items-center space-x-2"
+              className="bg-blue-600 hover:bg-blue-700 flex items-center space-x-2 px-3 py-1 rounded-md"
             >
               <Save size={18} />
               <span>{mode === 'create' ? 'Créer' : 'Sauvegarder'}</span>
-            </Button>
+            </button>
           </div>
         </form>
       </div>

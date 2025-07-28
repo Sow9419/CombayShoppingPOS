@@ -94,23 +94,23 @@ const CaissePage: React.FC = () => {
   const total = subtotal - discount + taxes;
 
   return (
-    <div className="h-screen bg-black text-white flex flex-col ">
+    <div className="h-screen bg-white dark:bg-black text-white flex flex-col ">
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel - Products */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Fixed Header Section */}
-          <div className="flex-shrink-0 bg-black">
+          <div className="flex-shrink-0 bg-white dark:bg-black">
             {/* Search Bar */}
             <div className="p-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700 dark:text-white " size={20} />
                 <input
                   type="text"
                   placeholder="Search"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-100 dark:bg-gray-900 border  rounded-xl text-gray-700 dark:text-white dark:placeholder-gray-400 placeholder-gray-800 focus:outline-none shadow-sm"
                 />
               </div>
             </div>
@@ -140,27 +140,27 @@ const CaissePage: React.FC = () => {
               {/* Add Product Card */}
               <div
                 onClick={() => setShowAddProduct(true)}
-                className="bg-gray-900 rounded-2xl p-4 h-32 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-800 transition-colors border-2 border-dashed border-gray-700"
+                className=" bg-white dark:bg-gray-900 rounded-2xl p-4 h-32 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors border-2 border-dashed border-gray-400 dark:border-gray-700"
               >
-                <Plus size={24} className="text-gray-400 mb-2" />
-                <span className="text-gray-400 text-sm text-center">Ajouter un produit</span>
+                <Plus size={24} className="text-gray-500 dark:text-white mb-2" />
+                <span className="text-gray-500 dark:text-white text-sm text-center">Ajouter un produit</span>
               </div>
             </div>
           </div>
 
           {/* Mobile Bottom Actions - Fixed */}
-          <div className="md:hidden flex-shrink-0 p-4 border-t border-gray-800 bg-black">
+          <div className="md:hidden flex-shrink-0 p-4 border-t border-gray-300 dark:border-gray-800 bg-gray-200 dark:bg-black">
             <div className="grid grid-cols-2 gap-4 mb-4 ">
-              <button className="bg-gray-900 rounded-xl p-4 flex flex-col items-center">
+              <button className="bg-white dark:bg-gray-900 rounded-xl p-4 flex flex-col items-center shadow-sm">
                 <BarChart3 size={24} className="text-blue-500 mb-2" />
-                <span className="text-sm">Nouvelle vente</span>
+                <span className="text-sm text-gray-700 dark:text-white">Nouvelle vente</span>
               </button>
               <button
                 onClick={() => setShowAddProduct(true)}
-                className="bg-gray-900 rounded-xl p-4 flex flex-col items-center"
+                className="bg-white dark:bg-gray-900 rounded-xl p-4 flex flex-col items-center shadow-sm"
               >
                 <Plus size={24} className="text-green-500 mb-2" />
-                <span className="text-sm">Ajouter un produit</span>
+                <span className="text-sm text-gray-700 dark:text-white">Ajouter un produit</span>
               </button>
             </div>
             
@@ -177,7 +177,7 @@ const CaissePage: React.FC = () => {
         </div>
 
         {/* Right Panel - Cart (Desktop only) */}
-        <div className="hidden md:block w-96 bg-gray-900 border-l border-gray-800 flex-shrink-0">
+        <div className="hidden md:block w-96 bg-gray-200 dark:bg-gray-900  flex-shrink-0">
           <CartPanel
             cart={cart}
             onUpdateQuantity={updateQuantity}
@@ -189,7 +189,7 @@ const CaissePage: React.FC = () => {
 
       {/* Mobile Cart Modal */}
       {showCart && (
-        <div className="md:hidden fixed inset-0 bg-black z-50 flex flex-col">
+        <div className="md:hidden fixed inset-0 bg-gray-200 dark:bg-black bg-opacity-50 z-50 flex flex-col">
           <CartPanel
             cart={cart}
             onUpdateQuantity={updateQuantity}

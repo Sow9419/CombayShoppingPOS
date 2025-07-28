@@ -43,16 +43,16 @@ const ProductDetailCard: React.FC<ProductDetailCardProps> = ({ product, onEdit, 
   return (
     <>
       <div 
-        className="bg-gray-700 rounded-lg p-4 cursor-pointer hover:bg-gray-600 transition-colors"
+        className="bg-white dark:bg-gray-700 rounded-lg p-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors shadow-md"
         onClick={handleCardClick}
       >
         {/* En-tête avec image et actions */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3 flex-1">
-            <div className="w-16 h-16 bg-gray-600 rounded-lg flex items-center justify-center overflow-hidden">
-              {product.image ? (
+            <div className="w-16 h-16 bg-zinc-200 dark:bg-gray-600 rounded-lg flex items-center justify-center overflow-hidden">
+              {product.imageUrl ? (
                 <img 
-                  src={product.image} 
+                  src={product.imageUrl} 
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
@@ -61,40 +61,37 @@ const ProductDetailCard: React.FC<ProductDetailCardProps> = ({ product, onEdit, 
               )}
             </div>
             <div className="flex-1">
-              <h3 className="text-white font-medium text-lg">{product.name}</h3>
+              <h3 className="text-black dark:text-white font-medium text-lg">{product.name}</h3>
               {product.sku && (
-                <p className="text-gray-400 text-sm">Code: {product.sku}</p>
+                <p className="text-gray-700 dark:text-gray-200 text-sm">Code: {product.sku}</p>
               )}
               {product.variant && (
-                <p className="text-gray-500 text-xs">{product.variant}</p>
+                <p className="text-gray-600 dark:text-gray-200 text-xs">{product.variant}</p>
               )}
             </div>
           </div>
           
           {/* Actions */}
           <div className="flex items-center space-x-2">
-            <Button
-              size="sm"
-              variant="secondary"
+            <button
+              
               onClick={(e) => {
                 e.stopPropagation();
                 onEdit(product);
               }}
-              className="p-2 hover:bg-blue-600"
+              className="p-2 hover:bg-zinc-200 dark:hover:bg-blue-600 rounded-md"
             >
-              <Edit size={16} />
-            </Button>
-            <Button
-              size="sm"
-              variant="secondary"
+              <Edit size={16} className='text-gray-900 dark:text-white'/>
+            </button>
+            <button        
               onClick={(e) => {
                 e.stopPropagation();
                 setShowDeleteModal(true);
               }}
-              className="p-2 hover:bg-red-600"
+              className="p-2 hover:bg-red-600 rounded-md"
             >
-              <Trash2 size={16} />
-            </Button>
+              <Trash2 size={16} className='text-gray-900 dark:text-white'/>
+            </button>
           </div>
         </div>
 
@@ -108,9 +105,9 @@ const ProductDetailCard: React.FC<ProductDetailCardProps> = ({ product, onEdit, 
         {/* Informations de stock */}
         <div className="flex items-center justify-between mb-4">
           <div>
-            <p className="text-gray-400 text-sm">Stock</p>
+            <p className="text-gray-800 dark:text-gray-400 text-sm">Stock</p>
             <div className="flex items-center space-x-2">
-              <span className="text-white font-bold text-lg">{product.stock}</span>
+              <span className="text-gray-900 dark:text-white font-bold text-lg">{product.stock}</span>
               <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium text-white ${stockStatus.color}`}>
                 {stockStatus.label}
               </span>
@@ -121,20 +118,20 @@ const ProductDetailCard: React.FC<ProductDetailCardProps> = ({ product, onEdit, 
         {/* Prix */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-gray-400 text-sm">P.A (Prix d'Achat)</p>
-            <p className="text-gray-300 font-medium text-lg">{purchasePrice.toFixed(2)}€</p>
+            <p className="text-gray-800 dark:text-gray-400 text-sm">P.A (Prix d'Achat)</p>
+            <p className="text-gray-700 dark:text-gray-300 font-medium text-lg">{purchasePrice.toFixed(2)}€</p>
           </div>
           <div>
-            <p className="text-gray-400 text-sm">P.V (Prix de Vente)</p>
-            <p className="text-green-400 font-bold text-lg">{product.price.toFixed(2)}€</p>
+            <p className="text-gray-800 dark:text-gray-400 text-sm">P.V (Prix de Vente)</p>
+            <p className="text-black dark:text-green-400 font-bold text-lg">{product.price.toFixed(2)}€</p>
           </div>
         </div>
 
         {/* Valeur totale */}
-        <div className="mt-4 pt-4 border-t border-gray-600">
+        <div className="mt-4 pt-4 border-t border-gray-300 dark:border-gray-600">
           <div className="flex justify-between items-center">
-            <span className="text-gray-400 text-sm">Valeur totale en stock</span>
-            <span className="text-white font-medium">{(product.price * product.stock).toFixed(2)}€</span>
+            <span className="text-gray-800 dark:text-gray-400 text-sm">Valeur totale en stock</span>
+            <span className="text-black dark:text-white font-medium">{(product.price * product.stock).toFixed(2)}€</span>
           </div>
         </div>
       </div>
@@ -142,9 +139,9 @@ const ProductDetailCard: React.FC<ProductDetailCardProps> = ({ product, onEdit, 
       {/* Modale de confirmation de suppression */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800 rounded-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold text-white mb-4">Confirmer la suppression</h3>
-            <p className="text-gray-300 mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold text-gray-950 dark:text-white mb-4">Confirmer la suppression</h3>
+            <p className="text-gray-800 dark:text-gray-300 mb-6">
               Êtes-vous sûr de vouloir supprimer le produit "{product.name}" ?
               Cette action est irréversible.
             </p>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Mail, MapPin, ShoppingBag, Calendar } from 'lucide-react';
+import { Phone, ShoppingBag, Calendar } from 'lucide-react';
 import { Customer } from '../../types';
 
 interface ContactListItemProps {
@@ -45,7 +45,7 @@ const ContactListItem: React.FC<ContactListItemProps> = ({ contact, onClick, con
   return (
     <div 
       onClick={() => onClick(contact)}
-      className="bg-gray-800 rounded-lg p-4 hover:bg-gray-750 transition-all duration-200 cursor-pointer border border-gray-700 hover:border-gray-600 group"
+      className="bg-white dark:bg-gray-800 rounded-lg p-4 hover:bg-gray-100 hover:dark:bg-gray-750 transition-all duration-200 cursor-pointer border border-gray-200 dark:border-gray-700  group"
     >
       <div className="flex items-start space-x-4">
         {/* Avatar */}
@@ -60,11 +60,11 @@ const ContactListItem: React.FC<ContactListItemProps> = ({ contact, onClick, con
           {/* Nom et informations principales */}
           <div className="flex items-start justify-between mb-2">
             <div>
-              <h3 className="text-white font-semibold text-lg group-hover:text-blue-300 transition-colors duration-200">
+              <h3 className="text-black dark:text-white font-semibold text-lg group-hover:text-blue-800 dark:group-hover:text-blue-600 transition-colors duration-200">
                 {contact.name}
               </h3>
               {contact.phone && (
-                <div className="flex items-center text-gray-400 text-sm mt-1">
+                <div className="flex items-center text-gray-700 dark:text-gray-400 text-sm mt-1">
                   <Phone size={14} className="mr-1" />
                   <span>{contact.phone}</span>
                 </div>
@@ -79,7 +79,7 @@ const ContactListItem: React.FC<ContactListItemProps> = ({ contact, onClick, con
                   <span>{contactType === 'clients' ? '4 Achats' : '12 Livraisons'}</span>
                 </div>
               </div>
-              <div className="text-green-400 font-semibold text-sm">
+              <div className="text-gray-700 dark:text-green-400 font-semibold text-sm">
                 {contact.totalPurchases.toFixed(2)}€
               </div>
             </div>
@@ -88,9 +88,9 @@ const ContactListItem: React.FC<ContactListItemProps> = ({ contact, onClick, con
           
           
           {/* Dernière activité */}
-          <div className="flex items-center text-gray-400 text-sm pt-2 border-t border-gray-700">
-            <Calendar size={14} className="mr-2" />
-            <span>
+          <div className="flex items-center text-gray-400 text-sm pt-2 border-t border-zinc-200 dark:border-gray-700">
+            <Calendar size={14} className="mr-2 text-gray-500 dark:text-gray-400" />
+            <span className='text-gray-500 dark:text-gray-400'>
               {contactType === 'clients' ? 'Dernier achat' : 'Dernière livraison'} : {formatDate('2025-07-04')}
             </span>
           </div>

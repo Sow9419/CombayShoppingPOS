@@ -15,7 +15,7 @@ interface RecentSaleItemProps {
 
 const RecentSaleItem: React.FC<RecentSaleItemProps> = ({ sale }) => {
   return (
-    <div className="flex items-center space-x-3 p-3 hover:bg-gray-700 rounded-lg transition-colors cursor-pointer">
+    <div className="flex items-center space-x-3 p-2 bg-zinc-100 dark:bg-slate-700 hover:bg-zinc-200 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer">
       <div className="w-12 h-12 bg-gray-600 rounded-lg overflow-hidden flex-shrink-0">
         {sale.image ? (
           <img 
@@ -25,7 +25,7 @@ const RecentSaleItem: React.FC<RecentSaleItemProps> = ({ sale }) => {
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
-            <span className="text-white text-xs font-bold">
+            <span className="text-black dark:text-white text-xs font-bold">
               {sale.productName.charAt(0)}
             </span>
           </div>
@@ -33,17 +33,17 @@ const RecentSaleItem: React.FC<RecentSaleItemProps> = ({ sale }) => {
       </div>
       
       <div className="flex-1 min-w-0">
-        <h4 className="text-white font-medium text-sm truncate">{sale.productName}</h4>
+        <h4 className="text-black dark:text-white font-medium text-sm truncate">{sale.productName}</h4>
         <div className="flex items-center justify-between mt-1">
-          <span className="text-yellow-400 text-xs font-medium">Stock : {sale.stock}</span>
-          <span className="text-white font-semibold text-sm">PV {sale.price.toFixed(0)}FCFA</span>
+          <span className="text-yellow-900 dark:text-yellow-400 text-xs font-medium">Stock : {sale.stock}</span>
+          <span className="text-black dark:text-white  font-semibold text-sm">PV {sale.price.toFixed(0)}FCFA</span>
         </div>
-        <p className="text-gray-400 text-xs mt-1">
+        <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">
           {sale.date} {sale.time}
         </p>
       </div>
       
-      <button className="text-gray-400 hover:text-white p-1">
+      <button className="text-gray-900 dark:text-gray-400 hover:text-white p-1">
         <MoreHorizontal size={16} />
       </button>
     </div>
@@ -51,10 +51,10 @@ const RecentSaleItem: React.FC<RecentSaleItemProps> = ({ sale }) => {
 };
 
 interface RecentSalesPanelProps {
-  period: string;
+  period?: string;
 }
 
-const RecentSalesPanel: React.FC<RecentSalesPanelProps> = ({ period }) => {
+const RecentSalesPanel: React.FC<RecentSalesPanelProps> = ({ period = "Aujourd'hui" }) => {
   const recentSales = [
     {
       id: '1',
@@ -95,15 +95,15 @@ const RecentSalesPanel: React.FC<RecentSalesPanelProps> = ({ period }) => {
   ];
 
   return (
-    <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
-      <div className="flex items-center justify-between p-4 border-b border-gray-700">
-        <h3 className="text-white font-semibold">Ventes Récentes</h3>
-        <button className="text-green-400 text-sm font-medium hover:text-green-300">
+    <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden p-3">
+      <div className="flex items-center justify-between p-4">
+        <h3 className="text-black dark:text-white font-semibold">Ventes Récentes - {period}</h3>
+        <button className="text-blue-600 dark:text-green-400 text-sm font-medium hover:text-green-300">
           Tout
         </button>
       </div>
       
-      <div className="max-h-80 overflow-y-auto no-scrollbar">
+      <div className="max-h-80 overflow-y-auto no-scrollbar space-y-2">
         {recentSales.map(sale => (
           <RecentSaleItem key={sale.id} sale={sale} />
         ))}

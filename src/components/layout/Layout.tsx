@@ -14,7 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, onNavigate }) =>
   const [showSettings, setShowSettings] = useState(false);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-gray-100 dark:bg-black">
       {/* Desktop Sidebar */}
       <Sidebar currentPath={currentPath} onNavigate={onNavigate} onSettingsClick={() => setShowSettings(true)} />
       
@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPath, onNavigate }) =>
       <MobileHeader onProfileClick={() => setShowSettings(true)} />
       
       {/* Main Content */}
-      <main className="md:ml-16 pt-16 md:pt-0 pb-20 md:pb-0 min-h-screen bg-black">
+      <main className="md:ml-16 pt-16 md:pt-0 pb-20 md:pb-0 min-h-screen bg-gray-100 dark:bg-black">
         <div className="p-0 md:p-0">
           {children}
         </div>

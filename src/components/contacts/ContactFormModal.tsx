@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, User, Phone, Building2 } from 'lucide-react';
 import { Customer } from '../../types';
-import Button from '../common/Button';
 
 interface ContactFormModalProps {
   isOpen: boolean;
@@ -53,7 +52,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
       newErrors.name = 'Le nom est requis';
     }
     
-    if (formData.phone && !/^[+]?[0-9\s\-\(\)]{8,}$/.test(formData.phone)) {
+    if (formData.phone && !/^[+]?[0-9\s\-()]{8,}$/.test(formData.phone)) {
       newErrors.phone = 'Numéro de téléphone invalide';
     }
     
@@ -92,17 +91,17 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
     : `Modifier ${contactType === 'clients' ? 'le client' : 'le fournisseur'}`;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-800 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
         {/* En-tête */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
-          <h2 className="text-xl font-semibold text-white flex items-center space-x-2">
+        <div className="flex items-center justify-between p-6 border-b border-zinc-300 dark:border-gray-700">
+          <h2 className="text-xl font-semibold text-black dark:text-white flex items-center space-x-2">
             {contactType === 'clients' ? <User size={24} /> : <Building2 size={24} />}
             <span>{title}</span>
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors duration-200"
+            className="text-gray-900 dark:text-gray-400 transition-colors duration-200"
           >
             <X size={24} />
           </button>
@@ -112,7 +111,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {/* Nom */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-2">
               <User size={16} className="inline mr-2" />
               Nom complet *
             </label>
@@ -120,7 +119,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
               type="text"
               value={formData.name}
               onChange={(e) => handleChange('name', e.target.value)}
-              className={`w-full px-3 py-2 bg-gray-700 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`w-full px-3 py-2 bg-zinc-100 dark:bg-gray-700 border border-zinc-300 dark:border-gray-800 rounded-lg text-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none ${
                 errors.name ? 'border-red-500' : 'border-gray-600'
               }`}
               placeholder="Entrez le nom complet"
@@ -130,7 +129,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
 
           {/* Téléphone */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-800 dark:text-gray-300 mb-2">
               <Phone size={16} className="inline mr-2" />
               Téléphone
             </label>
@@ -138,7 +137,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
               type="tel"
               value={formData.phone}
               onChange={(e) => handleChange('phone', e.target.value)}
-              className={`w-full px-3 py-2 bg-gray-700 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`w-full px-3 py-2 bg-zinc-100 dark:bg-gray-700 border border-zinc-300 dark:border-gray-800 rounded-lg text-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none ${
                 errors.phone ? 'border-red-500' : 'border-gray-600'
               }`}
               placeholder="+33 1 23 45 67 89"
@@ -165,20 +164,19 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
 
           {/* Boutons */}
           <div className="flex space-x-3 pt-4">
-            <Button
+            <button
               type="button"
-              onClick={onClose}
-              variant="secondary"
-              className="flex-1"
+              onClick={onClose}              
+              className="flex-1 p-2 bg-zinc-100 hover:bg-gray-700 rounded-lg text-gray-800 font-medium"
             >
               Annuler
-            </Button>
-            <Button
+            </button>
+            <button
               type="submit"
-              className="flex-1 bg-blue-600 hover:bg-blue-700"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 rounded-lg"
             >
               {mode === 'create' ? 'Ajouter' : 'Modifier'}
-            </Button>
+            </button>
           </div>
         </form>
       </div>
