@@ -63,7 +63,7 @@ const ChangePasswordPage: React.FC = () => {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center px-4">
         <Card className="w-full max-w-md">
           <div className="text-center">
             <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">

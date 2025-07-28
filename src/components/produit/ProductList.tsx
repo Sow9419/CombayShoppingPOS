@@ -20,34 +20,34 @@ const ProductList: React.FC<ProductListProps> = ({ products, onEditProduct, onDe
   }
 
   return (
-    <div className="bg-gray-900 rounded-lg overflow-hidden">
+    <div className="bg-white dark:bg-gray-900 rounded-lg overflow-hidden">
       {/* Affichage Desktop - Tableau */}
       <div className="hidden lg:block">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-700">
+            <thead className="bg-zinc-200 dark:bg-gray-700">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-black dark:text-gray-300 uppercase tracking-wider">
                   Produit
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-black dark:text-gray-300 uppercase tracking-wider">
                   Catégorie
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-black dark:text-gray-300 uppercase tracking-wider">
                   Stock
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-black dark:text-gray-300 uppercase tracking-wider">
                   P.A
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-black dark:text-gray-300 uppercase tracking-wider">
                   P.V
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-black dark:text-gray-300 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-700">
+            <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
               {products.map(product => (
                 <ProductListItem
                   key={product.id}
@@ -62,7 +62,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, onEditProduct, onDe
       </div>
 
       {/* Affichage Mobile/Tablet - Cartes */}
-      <div className="lg:hidden p-4 space-y-4">
+      <div className="lg:hidden p-4 space-y-4 bg-zinc-100 dark:bg-black">
         {products.map(product => (
           <ProductDetailCard
             key={product.id}

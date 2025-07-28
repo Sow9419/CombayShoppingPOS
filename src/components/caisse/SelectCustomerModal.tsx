@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+{/*
+  
+  import React, { useState } from 'react';
 import { X, UserPlus, Search } from 'lucide-react';
 import { Customer } from '../../types';
 
@@ -22,7 +24,7 @@ const SelectCustomerModal: React.FC<Props> = ({ isOpen, onClose, customers, onSe
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
-      <div className="bg-gray-800 rounded-lg p-6 w-full max-w-lg h-3/4 flex flex-col">
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-lg h-3/4 flex flex-col">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-white">Sélectionner un client</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-white">
@@ -72,3 +74,5 @@ const SelectCustomerModal: React.FC<Props> = ({ isOpen, onClose, customers, onSe
 };
 
 export default SelectCustomerModal;
+  
+  */}

@@ -23,20 +23,20 @@ const MobileDashboardTabs: React.FC<MobileDashboardTabsProps> = ({ period, onPer
   return (
     <div className="flex flex-col h-full">
       {/* Header avec filtre de période */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-700">
-        <h1 className="text-xl font-bold text-white">Dashboard</h1>
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <h1 className="text-xl font-bold text-black  dark:text-white">Dashboard</h1>
         <PeriodFilter period={period} onPeriodChange={onPeriodChange} />
       </div>
 
       {/* Onglets */}
-      <div className="flex border-b border-gray-700">
+      <div className="flex border-b border-gray-400 dark:border-gray-700">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`flex-1 flex items-center justify-center space-x-2 py-3 text-sm font-medium transition-colors ${
               activeTab === tab.id
-                ? 'text-blue-400 border-b-2 border-blue-400 bg-gray-800/50'
+                ? 'text-blue-600 border-b-2 border-blue-400 bg-white/50 dark:bg-gray-800/50'
                 : 'text-gray-400 hover:text-white'
             }`}
           >

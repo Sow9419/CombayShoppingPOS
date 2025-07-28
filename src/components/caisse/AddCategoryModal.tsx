@@ -57,12 +57,12 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
       
-      <div className="relative bg-gray-900 border border-gray-700 rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl">
+      <div className="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-white">Ajouter une catégorie</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Ajouter une catégorie</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             <X size={24} />
           </button>
@@ -71,14 +71,14 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Nom de la catégorie */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Nom de la catégorie *
             </label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 bg-muted border border-border rounded-lg text-card-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Ex: Électronique"
               required
             />
@@ -86,7 +86,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
 
           {/* Couleur */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-3">
+            <label className="block text-sm font-medium text-muted-foreground mb-3">
               Couleur de la catégorie
             </label>
             <div className="grid grid-cols-4 gap-3">
@@ -96,10 +96,10 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
                   type="button"
                   onClick={() => setFormData({ ...formData, color: option.value })}
                   className={`
-                    relative w-full h-12 rounded-lg border-2 transition-all duration-200
+                    relative w-full h-12 rounded-lg transition-all duration-200 
                     ${formData.color === option.value 
-                      ? 'border-white scale-105' 
-                      : 'border-gray-600 hover:border-gray-500'
+                      ? 'border-foreground scale-105' 
+                      : 'border-border hover:border-muted-foreground'
                     }
                   `}
                   style={{ backgroundColor: option.color }}
@@ -107,7 +107,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
                 >
                   {formData.color === option.value && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-4 h-4 bg-white rounded-full"></div>
+                      <div className="w-4 h-4 bg-foreground rounded-full"></div>
                     </div>
                   )}
                 </button>
@@ -117,15 +117,15 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
 
           {/* Aperçu */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Aperçu
             </label>
-            <div className="p-4 bg-gray-800 rounded-lg">
+            <div className="p-4 bg-muted rounded-lg">
               <div className="flex items-center space-x-3">
                 <div 
                   className={`w-4 h-4 rounded-full ${formData.color}`}
                 ></div>
-                <span className="text-white">
+                <span className="text-card-foreground">
                   {formData.name || 'Nom de la catégorie'}
                 </span>
               </div>
@@ -145,7 +145,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
             <Button
               type="submit"
               fullWidth
-              className="bg-blue-600 hover:bg-blue-700"
+              className="bg-primary hover:bg-primary/90"
             >
               Créer la catégorie
             </Button>

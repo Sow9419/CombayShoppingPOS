@@ -14,10 +14,10 @@ const AddContactButton: React.FC<AddContactButtonProps> = ({ onClick, contactTyp
   return (
     <Button 
       onClick={onClick}
-      className="w-full flex items-center justify-center space-x-2 px-6 py-1 bg-green-950 hover:bg-green-800 text-white rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+      className="w-full flex items-center justify-center space-x-2 px-6 py-1 bg-zinc-200 hover:bg-blue-500 dark:bg-gray-800 dark:hover:bg-gray-600  rounded-lg transition-all duration-200 shadow-md hover:shadow-xl"
     >
-      <Plus size={20} />
-      <span className="font-medium">{buttonText}</span>
+      <Plus size={20} className='text-gray-900 dark:text-white'/>
+      <span className="font-medium text-gray-900 dark:text-white">{buttonText}</span>
     </Button>
   );
 };

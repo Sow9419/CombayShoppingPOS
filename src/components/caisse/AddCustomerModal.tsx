@@ -22,44 +22,44 @@ const AddCustomerModal: React.FC<Props> = ({ isOpen, onClose, onAddCustomer }) =
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
-      <div className="bg-gray-800 rounded-lg p-6 w-full max-w-md">
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-white">Ajouter un client</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-white">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Ajouter un client</h2>
+          <button onClick={onClose} className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
             <X size={24} />
           </button>
         </div>
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-300">Nom</label>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom</label>
               <input
                 type="text"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full mt-1 bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full mt-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 required
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300">Email</label>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
               <input
                 type="email"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full mt-1 bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full mt-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-300">Téléphone</label>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Téléphone</label>
               <input
                 type="tel"
                 id="phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full mt-1 bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full mt-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
           </div>
