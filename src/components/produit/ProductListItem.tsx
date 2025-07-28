@@ -43,16 +43,16 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product, onEdit, onDe
   return (
     <>
       <tr 
-        className="hover:bg-gray-700 cursor-pointer transition-colors"
+        className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors"
         onClick={handleRowClick}
       >
         {/* Produit */}
         <td className="px-6 py-2">
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center overflow-hidden">
-              {product.image ? (
+              {product.imageUrl ? (
                 <img 
-                  src={product.image} 
+                  src={product.imageUrl} 
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
@@ -61,12 +61,12 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product, onEdit, onDe
               )}
             </div>
             <div>
-              <div className="text-white font-medium">{product.name}</div>
+              <div className=" text-black dark:text-white font-medium">{product.name}</div>
               {product.sku && (
-                <div className="text-gray-400 text-sm">Code: {product.sku}</div>
+                <div className="text-gray-700 dark:text-gray-400 text-sm">Code: {product.sku}</div>
               )}
               {product.variant && (
-                <div className="text-gray-500 text-xs">{product.variant}</div>
+                <div className="text-gray-500 dark:text-gray-500 text-xs">{product.variant}</div>
               )}
             </div>
           </div>
@@ -91,39 +91,35 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product, onEdit, onDe
 
         {/* Prix d'Achat */}
         <td className="px-6 py-4">
-          <span className="text-gray-300">{purchasePrice.toFixed(2)}€</span>
+          <span className="text-gray-700 dark:text-gray-300">{purchasePrice.toFixed(2)}€</span>
         </td>
 
         {/* Prix de Vente */}
         <td className="px-6 py-4">
-          <span className="text-green-400 font-medium">{product.price.toFixed(2)}€</span>
+          <span className="text-blue-600 dark:text-green-400 font-medium">{product.price.toFixed(2)}€</span>
         </td>
 
         {/* Actions */}
         <td className="px-6 py-4">
           <div className="flex items-center space-x-2">
-            <Button
-              size="sm"
-              variant="secondary"
+            <button
               onClick={(e) => {
                 e.stopPropagation();
                 onEdit(product);
               }}
-              className="p-2 hover:bg-blue-600"
+              className="  p-2 hover:bg-zinc-200 dark:hover:bg-blue-600 rounded-md"
             >
-              <Edit size={16} />
-            </Button>
-            <Button
-              size="sm"
-              variant="secondary"
+              <Edit size={16} className='text-gray-900 dark:text-white'/>
+            </button>
+            <button  
               onClick={(e) => {
                 e.stopPropagation();
                 setShowDeleteModal(true);
               }}
-              className="p-2 hover:bg-red-600"
+              className="p-2 hover:bg-red-600 rounded-md"
             >
-              <Trash2 size={16} />
-            </Button>
+              <Trash2 size={16} className='text-gray-900 dark:text-white'/>
+            </button>
           </div>
         </td>
       </tr>
@@ -132,10 +128,10 @@ const ProductListItem: React.FC<ProductListItemProps> = ({ product, onEdit, onDe
       {showDeleteModal && (
         <tr>
           <td colSpan={6}>
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-              <div className="bg-gray-800 rounded-lg p-6 w-full max-w-md">
-                <h3 className="text-lg font-semibold text-white mb-4">Confirmer la suppression</h3>
-                <p className="text-gray-300 mb-6">
+            <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+                <h3 className="text-lg font-semibold text-gray-950 dark:text-white mb-4">Confirmer la suppression</h3>
+                <p className="text-gray-800 dark:text-gray-300 mb-6">
                   Êtes-vous sûr de vouloir supprimer le produit "{product.name}" ?
                   Cette action est irréversible.
                 </p>

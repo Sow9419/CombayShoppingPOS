@@ -1,6 +1,5 @@
 import React from 'react';
 import { MoreHorizontal } from 'lucide-react';
-import * as Collapsible from '@radix-ui/react-collapsible';
 
 interface BestSellerItemProps {
   product: {
@@ -16,7 +15,7 @@ interface BestSellerItemProps {
 
 const BestSellerItem: React.FC<BestSellerItemProps> = ({ product }) => {
   return (
-    <div className="flex items-center space-x-3 p-3 hover:bg-gray-700 rounded-lg transition-colors cursor-pointer">
+    <div className="flex items-center space-x-3 p-2 bg-zinc-100 dark:bg-gray-700 hover:bg-zinc-200 hover:dark:bg-gray-700 rounded-lg transition-colors cursor-pointer">
       <div className="w-12 h-12 bg-gray-600 rounded-lg overflow-hidden flex-shrink-0">
         {product.image ? (
           <img 
@@ -26,7 +25,7 @@ const BestSellerItem: React.FC<BestSellerItemProps> = ({ product }) => {
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center">
-            <span className="text-white text-xs font-bold">
+            <span className="text-black dark:text-white text-xs font-bold">
               {product.name.charAt(0)}
             </span>
           </div>
@@ -34,17 +33,17 @@ const BestSellerItem: React.FC<BestSellerItemProps> = ({ product }) => {
       </div>
       
       <div className="flex-1 min-w-0">
-        <h4 className="text-white font-medium text-sm truncate">{product.name}</h4>
+        <h4 className="text-black dark:text-white font-medium text-sm truncate">{product.name}</h4>
         <div className="flex items-center justify-between mt-1">
-          <span className="text-yellow-400 text-xs font-medium">Stock : {product.stock}</span>
-          <span className="text-white font-semibold text-sm">PV {product.price.toFixed(0)}FCFA</span>
+          <span className="text-yellow-900 dark:text-yellow-400 text-xs font-medium">Stock : {product.stock}</span>
+          <span className="text-black dark:text-white font-semibold text-sm">PV {product.price.toFixed(0)}FCFA</span>
         </div>
-        <p className="text-gray-400 text-xs mt-1">
+        <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">
           {product.lastSaleDate} {product.lastSaleTime}
         </p>
       </div>
       
-      <button className="text-gray-400 hover:text-white p-1">
+      <button className="text-gray-900 dark:text-gray-400 hover:text-white p-1">
         <MoreHorizontal size={16} />
       </button>
     </div>
@@ -52,10 +51,10 @@ const BestSellerItem: React.FC<BestSellerItemProps> = ({ product }) => {
 };
 
 interface BestSellersPanelProps {
-  period: string;
+  period?: string;
 }
 
-const BestSellersPanel: React.FC<BestSellersPanelProps> = ({ period }) => {
+const BestSellersPanel: React.FC<BestSellersPanelProps> = ({ period = "Aujourd'hui" }) => {
   const bestSellers = [
     {
       id: '1',
@@ -96,15 +95,15 @@ const BestSellersPanel: React.FC<BestSellersPanelProps> = ({ period }) => {
   ];
 
   return (
-    <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
-      <div className="flex items-center justify-between p-4 border-b border-gray-700">
-        <h3 className="text-white font-semibold">Meilleur produit</h3>
-        <button className="text-green-400 text-sm font-medium hover:text-green-300">
+    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden p-3">
+      <div className="flex items-center justify-between p-4">
+        <h3 className="text-black dark:text-white font-semibold">Meilleur produit - {period}</h3>
+        <button className="text-blue-600 dark:text-green-400 text-sm font-medium hover:text-green-300">
           Tout
         </button>
       </div>
       
-      <div className="max-h-80 overflow-y-auto no-scrollbar">
+      <div className="max-h-80 overflow-y-auto no-scrollbar space-y-2">
         {bestSellers.map(product => (
           <BestSellerItem key={product.id} product={product} />
         ))}

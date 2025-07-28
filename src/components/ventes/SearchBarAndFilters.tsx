@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Search, ChevronDown } from 'lucide-react';
 
@@ -11,17 +12,7 @@ interface SearchBarAndFiltersProps {
   isMobile?: boolean;
 }
 
-const SearchBarAndFilters: React.FC<SearchBarAndFiltersProps> = ({
-  searchTerm,
-  onSearchChange,
-  saleType,
-  onSaleTypeChange,
-  dateFilter,
-  onDateFilterChange,
-  isMobile = false,
-}) => {
-
-
+const SearchBarAndFilters: React.FC<SearchBarAndFiltersProps> = ({ searchTerm, onSearchChange, saleType, onSaleTypeChange, dateFilter, onDateFilterChange, isMobile = false }) => {
   const saleTypes = [
     { value: 'all', label: 'Tous les types' },
     { value: 'vetement', label: 'Vêtement' },
@@ -38,8 +29,7 @@ const SearchBarAndFilters: React.FC<SearchBarAndFiltersProps> = ({
 
   if (isMobile) {
     return (
-      <div className="space-y-4">
-        {/* Barre de recherche mobile */}
+      <div className="space-y-2">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           <input
@@ -47,16 +37,15 @@ const SearchBarAndFilters: React.FC<SearchBarAndFiltersProps> = ({
             placeholder="Search"
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-3 bbg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none"
           />
         </div>
 
-        {/* Filtres horizontaux mobile */}
         <div className="flex space-x-3 overflow-x-auto pb-2 no-scrollbar">
           <select
             value={saleType}
             onChange={(e) => onSaleTypeChange(e.target.value)}
-            className="flex-shrink-0 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-shrink-0 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none"
           >
             {saleTypes.map((type) => (
               <option key={type.value} value={type.value}>
@@ -68,7 +57,7 @@ const SearchBarAndFilters: React.FC<SearchBarAndFiltersProps> = ({
           <select
             value={dateFilter}
             onChange={(e) => onDateFilterChange(e.target.value)}
-            className="flex-shrink-0 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-shrink-0 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none"
           >
             {dateFilters.map((date) => (
               <option key={date.value} value={date.value}>
@@ -82,8 +71,7 @@ const SearchBarAndFilters: React.FC<SearchBarAndFiltersProps> = ({
   }
 
   return (
-    <div className="flex items-center space-x-4 mb-6">
-      {/* Barre de recherche desktop */}
+    <div className="flex items-center space-x-4">
       <div className="flex-1 relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
         <input
@@ -91,17 +79,16 @@ const SearchBarAndFilters: React.FC<SearchBarAndFiltersProps> = ({
           placeholder="Search"
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full pl-10 pr-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none "
         />
       </div>
 
-      {/* Filtres desktop */}
       <div className="flex items-center space-x-3">
         <div className="relative">
           <select
             value={saleType}
             onChange={(e) => onSaleTypeChange(e.target.value)}
-            className="appearance-none px-4 py-3 pr-8 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+            className="appearance-none px-4 py-3 pr-8 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none"
           >
             {saleTypes.map((type) => (
               <option key={type.value} value={type.value}>
@@ -116,7 +103,7 @@ const SearchBarAndFilters: React.FC<SearchBarAndFiltersProps> = ({
           <select
             value={dateFilter}
             onChange={(e) => onDateFilterChange(e.target.value)}
-            className="appearance-none px-4 py-3 pr-8 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+            className="appearance-none px-4 py-3 pr-8 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none"
           >
             {dateFilters.map((date) => (
               <option key={date.value} value={date.value}>

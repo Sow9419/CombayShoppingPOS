@@ -10,9 +10,9 @@ interface ContactFilterSidebarProps {
 }
 
 const ContactFilterSidebar: React.FC<ContactFilterSidebarProps> = ({ activeType, onTypeChange, onAddContact }) => {
-  const linkClasses = "flex items-center space-x-3 w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 text-lg";
-  const activeClasses = "bg-gray-700 text-white";
-  const inactiveClasses = "hover:bg-gray-700 hover:text-white";
+  const linkClasses = " text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-800 flex items-center space-x-3 w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 text-lg";
+  const activeClasses = "bg-blue-700/80 dark:bg-blue-800 text-white dark:text-white";
+  const inactiveClasses = "hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white";
 
   return (
     <div className="flex flex-col h-full">

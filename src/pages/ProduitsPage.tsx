@@ -90,13 +90,13 @@ const ProduitsPage: React.FC = () => {
 
   // --- RENDU DU COMPOSANT ---
   return (
-    <div className="bg-gray-950 text-white min-h-screen flex flex-col md:flex-row">
+    <div className="bg-zinc-100 dark:bg-black md:dark:bg-gray-900/40 text-white min-h-screen flex flex-col md:flex-row">
       {/* Colonne de gauche (Filtres) - Fixe sur Desktop */}
-      <aside className="hidden md:block w-full md:w-72 lg:w-80 bg-black p-4 md:p-6 flex-shrink-0 md:h-screen md:sticky md:top-0">
+      <aside className="hidden md:block w-full md:w-72 lg:w-80 bg-white dark:bg-black p-4 md:p-6 flex-shrink-0 md:h-screen md:sticky md:top-0">
         <div className="space-y-6">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-white">Produits</h1>
-            <p className="text-gray-400 text-sm">Gérez votre inventaire</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-black dark:text-white">Produits</h1>
+            <p className="text-gray-700 dark:text-gray-400 text-sm">Gérez votre inventaire</p>
           </div>
           
           <Button 
@@ -104,7 +104,7 @@ const ProduitsPage: React.FC = () => {
             className="w-full flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700"
           >
             <Plus size={20} />
-            <span>Ajouter un produit</span>
+            <span className='text-white'>Ajouter un produit</span>
           </Button>
 
           <div className="space-y-4">
@@ -112,13 +112,13 @@ const ProduitsPage: React.FC = () => {
               <div className="space-y-4 pt-4">
                 {/* Barre de recherche */}
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-400" size={20} />
                   <input
                     type="text"
                     placeholder="Rechercher..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-10 pr-4 py-2.5 bg-zinc-100 dark:bg-gray-800 border border-gray-300 rounded-lg text-gray-800 dark:text-white placeholder-gray-700 dark:placeholder-gray-400 focus:outline-none"
                   />
                 </div>
 
@@ -139,9 +139,9 @@ const ProduitsPage: React.FC = () => {
       {/* Colonne de droite (Contenu) - Scrollable */}
       <div className="flex-1 flex flex-col">
         {/* Header Mobile */}
-        <header className="md:hidden bg-black p-4 sticky top-0 z-10 border-b border-gray-800">
+        <header className="md:hidden bg-white dark:bg-black p-4 sticky top-0 z-10 border-b border-gray-800">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold text-white">Produits</h1>
+            <h1 className="text-xl font-bold text-gray-800 dark:text-white">Produits</h1>
             <div className="flex items-center space-x-2">
               <Button 
                 onClick={() => handleOpenModal('create')}
@@ -150,13 +150,12 @@ const ProduitsPage: React.FC = () => {
               >
                 <Plus size={18} />
               </Button>
-              <Button 
+              <button 
                 onClick={() => setIsFilterModalOpen(true)}
-                variant="secondary"
-                size="sm"
+                className='bg-zinc-200 dark:bg-gray-800 rounded-md shadow-2xl px-3 py-1.5'
               >
-                <Filter size={18} />
-              </Button>
+                <Filter size={18} className='text-black dark:text-white'/>
+              </button>
             </div>
           </div>
           <div className="mt-4">
@@ -167,7 +166,7 @@ const ProduitsPage: React.FC = () => {
                 placeholder="Rechercher..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2 bg-zinc-200 dark:bg-gray-800 border border-gray-300 rounded-lg text-gray-800 dark:text-white placeholder-gray-700 dark:placeholder-gray-400 focus:outline-none"
               />
             </div>
           </div>
@@ -198,11 +197,11 @@ const ProduitsPage: React.FC = () => {
 
       {/* Modale de Filtres Mobile */}
       {isFilterModalOpen && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-end md:hidden">
-          <div className="bg-gray-900 w-full rounded-t-2xl p-4 shadow-lg">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-end md:hidden">
+          <div className="bg-white dark:bg-gray-900 w-full rounded-t-2xl p-4 shadow-lg ">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Filtres</h2>
-              <button onClick={() => setIsFilterModalOpen(false)} className="text-gray-400 hover:text-white">
+              <h2 className="text-lg font-semibold text-black dark:text-white">Filtres</h2>
+              <button onClick={() => setIsFilterModalOpen(false)} className="text-gray-900 dark:text-gray-400 hover:text-white">
                 <X size={24} />
               </button>
             </div>

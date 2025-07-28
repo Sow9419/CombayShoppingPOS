@@ -23,16 +23,16 @@ const SortFilter: React.FC<SortFilterProps> = ({ value, onChange }) => {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="appearance-none w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 pr-10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer min-w-[200px]"
+        className="appearance-none w-full bg-zinc-100 dark:bg-gray-700 rounded-lg px-4 py-3 pr-10 text-gray-800 dark:text-white border border-gray-100 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-800 cursor-pointer min-w-[200px] focus:outline-none"
       >
         {sortOptions.map(option => (
-          <option key={option.value} value={option.value} className="bg-gray-700">
+          <option key={option.value} value={option.value} className="bg-zinc-100 dark:bg-gray-700">
             {option.label}
           </option>
         ))}
       </select>
       <ChevronDown 
-        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" 
+        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-800 dark:text-gray-400 pointer-events-none" 
         size={20} 
       />
     </div>

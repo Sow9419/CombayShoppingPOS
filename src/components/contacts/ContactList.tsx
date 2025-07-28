@@ -20,7 +20,7 @@ const ContactList: React.FC<ContactListProps> = ({
     return (
       <div className="space-y-4">
         {[...Array(6)].map((_, index) => (
-          <div key={index} className="bg-gray-800 rounded-lg p-4 animate-pulse">
+          <div key={index} className="bg-white dark:bg-gray-800 rounded-lg p-4 animate-pulse">
             <div className="flex items-start space-x-4">
               <div className="w-12 h-12 bg-gray-700 rounded-full"></div>
               <div className="flex-1">

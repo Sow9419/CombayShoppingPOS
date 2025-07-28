@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Check, Clock, X, CreditCard, ShoppingBag } from 'lucide-react';
 
@@ -13,11 +14,7 @@ interface SalesStatusFilterProps {
   };
 }
 
-const SalesStatusFilter: React.FC<SalesStatusFilterProps> = ({
-  activeStatus,
-  onStatusChange,
-  statusCounts,
-}) => {
+const SalesStatusFilter: React.FC<SalesStatusFilterProps> = ({ activeStatus, onStatusChange, statusCounts }) => {
   const statusItems = [
     {
       id: 'all',
@@ -76,7 +73,7 @@ const SalesStatusFilter: React.FC<SalesStatusFilterProps> = ({
             w-full flex items-center justify-between p-2 rounded-xl transition-all duration-200
             ${activeStatus === item.id
               ? `${item.bgColor} ${item.borderColor} border-2 ${item.color}`
-              : 'bg-gray-800/50 border border-gray-700 text-gray-300 hover:bg-gray-800 hover:border-gray-600'
+              : 'bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600'
             }
           `}
         >
@@ -90,7 +87,7 @@ const SalesStatusFilter: React.FC<SalesStatusFilterProps> = ({
             px-2 py-1 rounded-full text-xs font-bold min-w-[24px] text-center
             ${activeStatus === item.id
               ? `${item.color} bg-current/20`
-              : 'bg-gray-700 text-gray-300'
+              : 'bg-blue-500 dark:bg-gray-700 text-gray-300'
             }
           `}>
             {item.count}

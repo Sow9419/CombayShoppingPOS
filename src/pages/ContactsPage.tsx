@@ -64,7 +64,7 @@ const ContactsPage: React.FC = () => {
   return (
     <div className="flex h-screen bg-black text-white">
       {/* Section gauche (Filtres) - Fond noir */}
-      <aside className="hidden md:block md:w-72 lg:w-80 p-6 bg-black border-r border-gray-800">
+      <aside className="hidden md:block md:w-72 lg:w-80 p-6 bg-white dark:bg-black">
         <ContactFilterSidebar
           activeType={activeContactType}
           onTypeChange={setActiveContactType}
@@ -75,10 +75,10 @@ const ContactsPage: React.FC = () => {
       {/* Section droite (Contenu principal) - Fond gris foncé */}
       <main className="flex-1 flex flex-col overflow-hidden bg-gray-900/50">
         {/* En-tête de la section principale */}
-        <header className="sticky top-0 bg-gray-900/80 backdrop-blur-sm z-10 border-b border-gray-800 px-4 sm:px-6 lg:px-8">
+        <header className="sticky top-0 bg-zinc-100 dark:bg-gray-900/20 backdrop-blur-sm z-10 border-b border-zinc-300 dark:border-gray-800 px-4 sm:px-6 lg:px-8">
           <div className="pt-6 pb-4">
-            <h1 className="text-2xl font-bold text-white">Gestion des Contacts</h1>
-            <p className="text-sm text-gray-400">
+            <h1 className="text-2xl font-bold text-black dark:text-white">Gestion des Contacts</h1>
+            <p className="text-sm text-gray-800 dark:text-gray-400">
               Gérez vos clients et fournisseurs en un seul endroit.
             </p>
           </div>
@@ -97,7 +97,7 @@ const ContactsPage: React.FC = () => {
         </header>
 
         {/* Contenu scrollable */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-zinc-100 dark:bg-gray-900/20">
           <ContactList
             contacts={filteredContacts}
             onContactClick={handleOpenDetailModal}

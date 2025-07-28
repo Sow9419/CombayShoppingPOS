@@ -10,20 +10,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
   return (
     <div
       onClick={() => onClick(product)}
-      className="relative bg-gray-900 rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl group h-32"
+      className="relative bg-white dark:bg-gray-900 rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl group h-32"
     >
       {/* Image de fond ou couleur de fond */}
-      {product.image ? (
+      {product.imageUrl ? (
         <div
           className="absolute inset-0 bg-cover bg-center opacity-60 group-hover:opacity-80 transition-opacity duration-200"
-          style={{ backgroundImage: `url(${product.image})` }}
+          style={{ backgroundImage: `url(${product.imageUrl})` }}
         />
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900" />
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-100/10 to-blue-700/70 dark:from-gray-400 dark:to-gray-900" />
       )}
 
       {/* Overlay sombre */}
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-black/60 dark:bg-black/40" />
 
       {/* Contenu */}
       <div className="relative z-10 p-3 h-full flex flex-col justify-between">

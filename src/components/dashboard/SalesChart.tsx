@@ -50,7 +50,7 @@ const data = {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-gray-900/80 backdrop-blur-sm text-white p-4 rounded-xl border border-gray-700 shadow-lg">
+      <div className="bg-gray-900/80 backdrop-blur-sm text-white p-4 rounded-xl  shadow-lg">
         <p className="font-bold text-lg mb-2">{label}</p>
         {payload.map((pld: any, index: number) => (
           <div key={index} className="flex items-center justify-between">
@@ -71,16 +71,16 @@ const SalesChart: React.FC<SalesChartProps> = ({ period }) => {
   const chartData = data[period as keyof typeof data] || data.month;
 
   return (
-    <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 backdrop-blur-sm">
+    <div className="bg-white dark:bg-gray-900/50 rounded-2xl p-2 border border-gray-200 dark:border-gray-700/50 backdrop-blur-sm">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-white">Performance</h2>
-          <p className="text-gray-400">Ventes vs Dépenses</p>
+          <h2 className="text-2xl font-bold text-black dark:text-white">Performance</h2>
+          <p className="text-gray-800 dark:text-gray-400">Ventes vs Dépenses</p>
         </div>
       </div>
 
-      <div className="h-96 w-full">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="h-80 w-full">
+        <ResponsiveContainer width="100%" height="100%" >
           <AreaChart
             data={chartData}
             margin={{
@@ -92,24 +92,24 @@ const SalesChart: React.FC<SalesChartProps> = ({ period }) => {
           >
             <defs>
               <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#34D399" stopOpacity={0.4}/>
-                <stop offset="95%" stopColor="#34D399" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#94A9ABFF" stopOpacity={0.4}/>
+                <stop offset="95%" stopColor="#FFFFFFFF" stopOpacity={0}/>
               </linearGradient>
               <linearGradient id="colorExpenses" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#F87171" stopOpacity={0.4}/>
-                <stop offset="95%" stopColor="#F87171" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#503CB7FF" stopOpacity={0.4}/>
+                <stop offset="95%" stopColor="#5212C2FF" stopOpacity={0}/>
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#374151" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#374151FF" vertical={false} />
             <XAxis 
               dataKey="name" 
-              stroke="#9CA3AF"
+              stroke="#696C72FF"
               fontSize={12}
               tickLine={false}
               axisLine={false}
             />
             <YAxis 
-              stroke="#9CA3AF"
+              stroke="#696C72FF"
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -120,18 +120,18 @@ const SalesChart: React.FC<SalesChartProps> = ({ period }) => {
             <Area 
                 type="monotone" 
                 dataKey="sales" 
-                stroke="#34D399" 
+                stroke="#8EEF9FFF" 
                 strokeWidth={3}
                 fillOpacity={1} 
                 fill="url(#colorSales)" 
                 name="Ventes"
                 dot={{ stroke: '#34D399', strokeWidth: 2, r: 5, fill: '#111827' }}
-                activeDot={{ r: 8, stroke: '#34D399', fill: '#111827' }}
+                activeDot={{ r: 8, stroke: '#34D399', fill: '#111827FF' }}
             />
             <Area 
                 type="monotone" 
                 dataKey="expenses" 
-                stroke="#F87171" 
+                stroke="#1E68DFFF" 
                 strokeWidth={3}
                 fillOpacity={1} 
                 fill="url(#colorExpenses)" 

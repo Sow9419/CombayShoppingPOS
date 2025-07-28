@@ -23,8 +23,8 @@ const CategoryBar: React.FC<CategoryBarProps> = ({
         className={`
           flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
           ${selectedCategory === null
-            ? 'bg-white text-black'
-            : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+            ? 'bg-blue-600 text-white dark:bg-white dark:text-black'
+            : 'bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 shadow-md'
           }
         `}
       >
@@ -39,8 +39,8 @@ const CategoryBar: React.FC<CategoryBarProps> = ({
           className={`
             flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
             ${selectedCategory === category.id
-              ? 'bg-white text-black'
-              : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+              ? 'bg-blue-600 text-white dark:bg-black dark:text-black shadow-md'
+              : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-white shadow-md'
             }
           `}
         >
@@ -51,7 +51,7 @@ const CategoryBar: React.FC<CategoryBarProps> = ({
       {/* Bouton Ajouter catégorie */}
       <button
         onClick={onAddCategory}
-        className="flex-shrink-0 w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-full flex items-center justify-center text-gray-300 hover:text-white transition-all duration-200"
+        className="flex-shrink-0 w-10 h-10 bg-white dark:bg-gray-800 hover:bg-gray-300  dark:hover:bg-gray-700 rounded-full flex items-center justify-center text-gray-700 dark:text-gray-300  transition-all duration-200 shadow-md"
         title="Ajouter une catégorie"
       >
         <Plus size={20} />

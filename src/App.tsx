@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { SettingsProvider } from './contexts/SettingsContext';
 import Home from './pages/Home';
 import { useAuth } from './hooks/useAuth';
 import Button from './components/common/Button';
@@ -82,11 +81,7 @@ function AuthWrapper() {
 }
 
 function App() {
-  return (
-    <SettingsProvider>
-      <AuthWrapper />
-    </SettingsProvider>
-  );
+  return <AuthWrapper />;
 }
 
 export default App;
