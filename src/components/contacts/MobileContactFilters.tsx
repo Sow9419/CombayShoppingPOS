@@ -9,7 +9,7 @@ interface MobileContactFiltersProps {
 
 const MobileContactFilters: React.FC<MobileContactFiltersProps> = ({ activeType, onTypeChange, onAddContact }) => {
   const baseClasses = "flex-1 flex items-center justify-center px-3 py-3 text-sm font-medium transition-colors duration-200 rounded-md text-gray-900 dark:text-white";
-  const activeClasses = "bg-gray-700 dark:bg-gray-700 text-white";
+  const activeClasses = "bg-blue-600 hover:bg-blue-700 dark:bg-gray-700 text-white";
   const inactiveClasses = "hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white";
 
   return (
