@@ -10,6 +10,7 @@ import { Sale } from '../types';
 const mockSalesData: Sale[] = [
   {
     id: '1',
+    customerId: '1',
     orderNumber: 'ODR-3678',
     productName: 'T-shirt',
     date: "Aujourd'hui",
@@ -18,7 +19,7 @@ const mockSalesData: Sale[] = [
     paymentStatus: 'paid',
     transactionStatus: 'complete',
     stock: 8,
-    type: 'vetement',
+    avancer:5.000,
   },
   {
     id: '2',
@@ -30,7 +31,7 @@ const mockSalesData: Sale[] = [
     paymentStatus: 'partial',
     transactionStatus: 'complete',
     stock: 8,
-    type: 'vetement',
+    avancer:5.000,
   },
   {
     id: '3',
@@ -42,7 +43,7 @@ const mockSalesData: Sale[] = [
     paymentStatus: 'paid',
     transactionStatus: 'complete',
     stock: 8,
-    type: 'vetement',
+    avancer:5.000,
   },
   {
     id: '4',
@@ -54,7 +55,7 @@ const mockSalesData: Sale[] = [
     paymentStatus: 'paid',
     transactionStatus: 'complete',
     stock: 8,
-    type: 'vetement',
+    avancer:5.000,
   },
   {
     id: '5',
@@ -66,7 +67,8 @@ const mockSalesData: Sale[] = [
     paymentStatus: 'cancelled',
     transactionStatus: 'incomplete',
     stock: 8,
-    type: 'vetement',
+    avancer:5.000,
+    
   },
   {
     id: '6',
@@ -78,7 +80,7 @@ const mockSalesData: Sale[] = [
     paymentStatus: 'credit',
     transactionStatus: 'incomplete',
     stock: 8,
-    type: 'vetement',
+    avancer:5.000,
   },
   {
     id: '7',
@@ -90,7 +92,7 @@ const mockSalesData: Sale[] = [
     paymentStatus: 'paid',
     transactionStatus: 'complete',
     stock: 8,
-    type: 'vetement',
+    avancer:5.000,
   },
   {
     id: '8',
@@ -102,7 +104,7 @@ const mockSalesData: Sale[] = [
     paymentStatus: 'paid',
     transactionStatus: 'complete',
     stock: 8,
-    type: 'vetement',
+    avancer:5.000,
   },
 ];
 
@@ -135,9 +137,7 @@ const VentesPage: React.FC = () => {
         return false;
       }
 
-      if (saleType !== 'all' && sale.type !== saleType) {
-        return false;
-      }
+
 
       if (dateFilter === 'today' && sale.date !== "Aujourd'hui") {
         return false;
@@ -145,7 +145,7 @@ const VentesPage: React.FC = () => {
 
       return true;
     });
-  }, [activeStatus, searchTerm, saleType, dateFilter]);
+  }, [activeStatus, searchTerm, dateFilter]);
 
   const handleSaleClick = (sale: Sale) => {
     setSelectedSale(sale);
